@@ -15,7 +15,7 @@ export default {
     extend: {
       fontFamily: {
         display: ['Cinzel', 'serif'],
-        body: ['Cormorant Garamond', 'serif'],
+        body: ['Special Elite', 'monospace'],
       },
       colors: {
         border: "hsl(var(--border))",
@@ -23,17 +23,15 @@ export default {
         ring: "hsl(var(--ring))",
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
-        divine: {
-          gold: "hsl(var(--divine-gold))",
-          glow: "hsl(var(--divine-gold-glow))",
-          amber: "hsl(var(--divine-amber))",
+        death: {
+          red: "hsl(var(--death-red))",
+          crimson: "hsl(var(--death-crimson))",
+          black: "hsl(var(--death-black))",
+          dark: "hsl(var(--death-dark))",
+          white: "hsl(var(--death-white))",
         },
-        cosmic: {
-          dark: "hsl(var(--cosmic-dark))",
-          deep: "hsl(var(--cosmic-deep))",
-        },
-        celestial: {
-          blue: "hsl(var(--celestial-blue))",
+        l: {
+          blue: "hsl(var(--l-blue))",
         },
         primary: {
           DEFAULT: "hsl(var(--primary))",
@@ -88,10 +86,20 @@ export default {
           from: { height: "var(--radix-accordion-content-height)" },
           to: { height: "0" },
         },
+        "fade-in": {
+          from: { opacity: "0", transform: "translateY(20px)" },
+          to: { opacity: "1", transform: "translateY(0)" },
+        },
+        "pulse-red": {
+          "0%, 100%": { boxShadow: "0 0 20px hsl(0 85% 50% / 0.4)" },
+          "50%": { boxShadow: "0 0 40px hsl(0 85% 50% / 0.6), 0 0 80px hsl(0 85% 50% / 0.3)" },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
+        "fade-in": "fade-in 0.8s ease-out forwards",
+        "pulse-red": "pulse-red 2s ease-in-out infinite",
       },
     },
   },
