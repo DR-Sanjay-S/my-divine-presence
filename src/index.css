@@ -8,52 +8,53 @@
 
 @layer base {
   :root {
-    --background: 0 0% 4%;
-    --foreground: 0 0% 95%;
+    --background: 0 0% 98%;
+    --foreground: 0 0% 5%;
 
-    --card: 0 0% 8%;
-    --card-foreground: 0 0% 95%;
+    --card: 0 0% 100%;
+    --card-foreground: 0 0% 5%;
 
-    --popover: 0 0% 8%;
-    --popover-foreground: 0 0% 95%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 0 0% 5%;
 
-    --primary: 0 85% 50%;
+    --primary: 0 85% 45%;
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 0 0% 12%;
-    --secondary-foreground: 0 0% 95%;
+    --secondary: 0 0% 92%;
+    --secondary-foreground: 0 0% 5%;
 
-    --muted: 0 0% 15%;
-    --muted-foreground: 0 0% 65%;
+    --muted: 0 0% 90%;
+    --muted-foreground: 0 0% 40%;
 
-    --accent: 0 85% 55%;
+    --accent: 0 85% 45%;
     --accent-foreground: 0 0% 100%;
 
     --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive-foreground: 0 0% 100%;
 
-    --border: 0 0% 20%;
-    --input: 0 0% 12%;
-    --ring: 0 85% 50%;
+    --border: 0 0% 85%;
+    --input: 0 0% 90%;
+    --ring: 0 85% 45%;
 
     --radius: 0.5rem;
 
-    /* Death Note custom colors */
-    --death-red: 0 85% 50%;
-    --death-crimson: 0 100% 40%;
-    --death-black: 0 0% 4%;
-    --death-dark: 0 0% 8%;
-    --death-white: 0 0% 95%;
-    --l-blue: 220 50% 25%;
+    /* Evil theme custom colors */
+    --death-red: 0 85% 45%;
+    --death-crimson: 0 100% 30%;
+    --death-black: 0 0% 5%;
+    --death-dark: 0 0% 10%;
+    --death-white: 0 0% 98%;
+    --l-blue: 220 60% 40%;
+    --evil-purple: 270 70% 35%;
 
     /* Gradients */
-    --gradient-death: linear-gradient(135deg, hsl(0 85% 50%), hsl(0 100% 30%), hsl(0 0% 10%));
-    --gradient-dark: radial-gradient(ellipse at center, hsl(0 0% 10%) 0%, hsl(0 0% 4%) 70%);
-    --gradient-blood: radial-gradient(circle, hsl(0 85% 50% / 0.3) 0%, transparent 70%);
+    --gradient-death: linear-gradient(135deg, hsl(0 85% 45%), hsl(0 100% 25%), hsl(0 0% 10%));
+    --gradient-light: radial-gradient(ellipse at center, hsl(0 0% 100%) 0%, hsl(0 0% 95%) 70%);
+    --gradient-blood: radial-gradient(circle, hsl(0 85% 45% / 0.2) 0%, transparent 70%);
 
     /* Shadows */
-    --shadow-death: 0 0 60px hsl(0 85% 50% / 0.4), 0 0 120px hsl(0 85% 50% / 0.2);
-    --shadow-text: 0 0 40px hsl(0 85% 50% / 0.8);
+    --shadow-death: 0 0 60px hsl(0 85% 45% / 0.3), 0 0 120px hsl(0 85% 45% / 0.1);
+    --shadow-text: 0 0 40px hsl(0 85% 45% / 0.6);
 
     --sidebar-background: 0 0% 98%;
     --sidebar-foreground: 240 5.3% 26.1%;
@@ -73,7 +74,7 @@
 
   body {
     @apply bg-background text-foreground antialiased;
-    background: var(--gradient-dark);
+    background: var(--gradient-light);
     min-height: 100vh;
     font-family: 'Special Elite', monospace;
   }
@@ -90,7 +91,7 @@
     -webkit-text-fill-color: transparent;
     background-clip: text;
     text-shadow: none;
-    filter: drop-shadow(0 0 30px hsl(0 85% 50% / 0.5));
+    filter: drop-shadow(0 0 30px hsl(0 85% 45% / 0.4));
   }
 
   .glow-death {
@@ -99,7 +100,7 @@
 
   .death-border {
     border: 2px solid transparent;
-    background: linear-gradient(var(--gradient-dark), var(--gradient-dark)) padding-box,
+    background: linear-gradient(hsl(0 0% 100%), hsl(0 0% 100%)) padding-box,
                 var(--gradient-death) border-box;
   }
 

@@ -8,7 +8,7 @@ interface CharacterCardProps {
 
 const CharacterCard = ({ name, title, description, image, isKira = false }: CharacterCardProps) => {
   return (
-    <div className="character-card group relative rounded-lg overflow-hidden bg-card">
+    <div className="character-card group relative rounded-lg overflow-hidden bg-card shadow-lg border border-border">
       {/* Image container */}
       <div className="relative h-80 overflow-hidden">
         <img 
@@ -24,7 +24,7 @@ const CharacterCard = ({ name, title, description, image, isKira = false }: Char
         
         {/* Red glow on hover */}
         <div 
-          className={`absolute inset-0 opacity-0 group-hover:opacity-30 transition-opacity duration-500 ${
+          className={`absolute inset-0 opacity-0 group-hover:opacity-20 transition-opacity duration-500 ${
             isKira ? 'bg-death-red' : 'bg-l-blue'
           }`}
         />

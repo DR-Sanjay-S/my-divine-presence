@@ -32,7 +32,11 @@ const ProfileSection = () => {
       </h2>
       
       <p className="mt-2 font-body text-death-red text-sm uppercase tracking-[0.3em]">
-        Master of Justice
+        ☠ Master of the Note ☠
+      </p>
+      
+      <p className="mt-1 font-body text-muted-foreground text-xs uppercase tracking-[0.2em]">
+        Wielder of Ultimate Power
       </p>
     </div>
   );
