@@ -3,6 +3,7 @@ import CharacterCard from '@/components/CharacterCard';
 import DeathNoteBook from '@/components/DeathNoteBook';
 import ProfileSection from '@/components/ProfileSection';
 import EvilSymbols from '@/components/EvilSymbols';
+import InspirationSection from '@/components/InspirationSection';
 
 import kiraImage from '@/assets/kira-light.jpg';
 import lImage from '@/assets/l-lawliet.jpg';
@@ -101,10 +102,15 @@ const Index = () => {
           <DeathNoteBook />
         </section>
 
+        {/* Inspirations Section */}
+        <div className="animate-fade-in" style={{ animationDelay: '1.5s' }}>
+          <InspirationSection />
+        </div>
+
         {/* Evil Quote */}
         <section 
           className="max-w-2xl text-center mb-16 animate-fade-in"
-          style={{ animationDelay: '1.6s' }}
+          style={{ animationDelay: '1.8s' }}
         >
           <div className="p-8 rounded-lg death-border bg-card/50 backdrop-blur-sm">
             <blockquote className="font-body text-xl md:text-2xl text-foreground italic leading-relaxed">
