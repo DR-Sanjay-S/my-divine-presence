@@ -22,12 +22,21 @@ const DeathNoteBook = () => {
       </div>
       
       {/* Rules text */}
-      <div className="mt-8 max-w-md mx-auto text-center">
-        <h4 className="font-display text-lg text-death-red mb-4">Rules of the Death Note</h4>
-        <ul className="font-body text-sm text-muted-foreground space-y-2 italic">
-          <li>The human whose name is written in this note shall die.</li>
-          <li>This note will not take effect unless the writer has the person's face in their mind.</li>
-          <li>After writing the cause of death, details should be written in the next 6 minutes and 40 seconds.</li>
+      <div className="mt-8 max-w-md mx-auto text-center p-6 rounded-lg bg-card/80 border border-border shadow-lg">
+        <h4 className="font-display text-lg text-death-red mb-4">⛧ Rules of the Sanjay S Note ⛧</h4>
+        <ul className="font-body text-sm text-foreground space-y-3">
+          <li className="flex items-start gap-2">
+            <span className="text-death-red">✦</span>
+            <span>The human whose name is written in this note shall die.</span>
+          </li>
+          <li className="flex items-start gap-2">
+            <span className="text-death-red">✦</span>
+            <span>This note will not take effect unless the writer has the person's face in their mind.</span>
+          </li>
+          <li className="flex items-start gap-2">
+            <span className="text-death-red">✦</span>
+            <span>After writing the cause of death, details should be written in the next 6 minutes and 40 seconds.</span>
+          </li>
         </ul>
       </div>
     </div>
