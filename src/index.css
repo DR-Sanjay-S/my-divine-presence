@@ -1,60 +1,49 @@
-@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700;900&family=Special+Elite&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700;900&family=JetBrains+Mono:wght@300;400;500&display=swap');
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* Death Note Design System - Dark & Mysterious */
+/* Sanjay S Note - Personal Power Journal */
 
 @layer base {
   :root {
-    --background: 0 0% 98%;
-    --foreground: 0 0% 5%;
+    --background: 220 15% 8%;
+    --foreground: 45 20% 95%;
 
-    --card: 0 0% 100%;
-    --card-foreground: 0 0% 5%;
+    --card: 220 15% 12%;
+    --card-foreground: 45 20% 95%;
 
-    --popover: 0 0% 100%;
-    --popover-foreground: 0 0% 5%;
+    --popover: 220 15% 12%;
+    --popover-foreground: 45 20% 95%;
 
-    --primary: 0 85% 45%;
-    --primary-foreground: 0 0% 100%;
+    --primary: 45 90% 55%;
+    --primary-foreground: 220 15% 8%;
 
-    --secondary: 0 0% 92%;
-    --secondary-foreground: 0 0% 5%;
+    --secondary: 220 15% 18%;
+    --secondary-foreground: 45 20% 95%;
 
-    --muted: 0 0% 90%;
-    --muted-foreground: 0 0% 40%;
+    --muted: 220 15% 20%;
+    --muted-foreground: 220 10% 60%;
 
-    --accent: 0 85% 45%;
-    --accent-foreground: 0 0% 100%;
+    --accent: 45 90% 55%;
+    --accent-foreground: 220 15% 8%;
 
-    --destructive: 0 84.2% 60.2%;
+    --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 0 0% 85%;
-    --input: 0 0% 90%;
-    --ring: 0 85% 45%;
+    --border: 220 15% 20%;
+    --input: 220 15% 15%;
+    --ring: 45 90% 55%;
 
     --radius: 0.5rem;
 
-    /* Evil theme custom colors */
-    --death-red: 0 85% 45%;
-    --death-crimson: 0 100% 30%;
-    --death-black: 0 0% 5%;
-    --death-dark: 0 0% 10%;
-    --death-white: 0 0% 98%;
-    --l-blue: 220 60% 40%;
-    --evil-purple: 270 70% 35%;
-
-    /* Gradients */
-    --gradient-death: linear-gradient(135deg, hsl(0 85% 45%), hsl(0 100% 25%), hsl(0 0% 10%));
-    --gradient-light: radial-gradient(ellipse at center, hsl(0 0% 100%) 0%, hsl(0 0% 95%) 70%);
-    --gradient-blood: radial-gradient(circle, hsl(0 85% 45% / 0.2) 0%, transparent 70%);
-
-    /* Shadows */
-    --shadow-death: 0 0 60px hsl(0 85% 45% / 0.3), 0 0 120px hsl(0 85% 45% / 0.1);
-    --shadow-text: 0 0 40px hsl(0 85% 45% / 0.6);
+    /* Custom colors */
+    --gold: 45 90% 55%;
+    --gold-dark: 45 80% 40%;
+    --ink-black: 220 15% 5%;
+    --paper: 45 30% 96%;
+    --blood-red: 0 70% 45%;
 
     --sidebar-background: 0 0% 98%;
     --sidebar-foreground: 240 5.3% 26.1%;
@@ -74,96 +63,62 @@
 
   body {
     @apply bg-background text-foreground antialiased;
-    background: var(--gradient-light);
-    min-height: 100vh;
-    font-family: 'Special Elite', monospace;
+    font-family: 'JetBrains Mono', monospace;
   }
 
   h1, h2, h3, h4, h5, h6 {
-    font-family: 'Cinzel', serif;
+    font-family: 'Playfair Display', serif;
   }
 }
 
 @layer components {
-  .text-death {
-    background: var(--gradient-death);
+  .text-gold {
+    background: linear-gradient(135deg, hsl(45 90% 55%), hsl(45 80% 40%));
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
-    text-shadow: none;
-    filter: drop-shadow(0 0 30px hsl(0 85% 45% / 0.4));
   }
 
-  .glow-death {
-    box-shadow: var(--shadow-death);
+  .glow-gold {
+    box-shadow: 0 0 40px hsl(45 90% 55% / 0.3), 0 0 80px hsl(45 90% 55% / 0.1);
   }
 
-  .death-border {
-    border: 2px solid transparent;
-    background: linear-gradient(hsl(0 0% 100%), hsl(0 0% 100%)) padding-box,
-                var(--gradient-death) border-box;
+  .notebook-line {
+    border-bottom: 1px solid hsl(220 15% 20%);
   }
 
-  .character-card {
-    position: relative;
-    transition: all 0.5s ease;
-  }
-
-  .character-card:hover {
-    transform: scale(1.05);
-  }
-
-  .character-card::before {
-    content: '';
-    position: absolute;
-    inset: -2px;
-    background: linear-gradient(135deg, hsl(0 85% 50%), transparent, hsl(0 85% 50%));
-    border-radius: inherit;
-    z-index: -1;
-    opacity: 0;
-    transition: opacity 0.3s;
-  }
-
-  .character-card:hover::before {
-    opacity: 1;
+  .page-texture {
+    background-image: 
+      linear-gradient(90deg, transparent 79px, hsl(0 70% 45% / 0.3) 79px, hsl(0 70% 45% / 0.3) 81px, transparent 81px),
+      linear-gradient(hsl(220 15% 18% / 0.5) 1px, transparent 1px);
+    background-size: 100% 100%, 100% 2rem;
   }
 }
 
-@keyframes flicker {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.8; }
-  75% { opacity: 0.9; }
-}
-
-@keyframes glitch {
-  0%, 100% { transform: translate(0); }
-  20% { transform: translate(-2px, 2px); }
-  40% { transform: translate(-2px, -2px); }
-  60% { transform: translate(2px, 2px); }
-  80% { transform: translate(2px, -2px); }
-}
-
-@keyframes bloodDrip {
-  0% { transform: translateY(-100%); opacity: 0; }
-  50% { opacity: 1; }
-  100% { transform: translateY(100vh); opacity: 0; }
-}
-
-@keyframes pulseRed {
-  0%, 100% { 
-    box-shadow: 0 0 20px hsl(0 85% 50% / 0.4);
-  }
-  50% { 
-    box-shadow: 0 0 40px hsl(0 85% 50% / 0.6), 0 0 80px hsl(0 85% 50% / 0.3);
-  }
-}
-
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(20px); }
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(30px); }
   to { opacity: 1; transform: translateY(0); }
 }
 
-@keyframes writeText {
+@keyframes typewriter {
   from { width: 0; }
   to { width: 100%; }
+}
+
+@keyframes blink {
+  50% { border-color: transparent; }
+}
+
+@keyframes pulse-gold {
+  0%, 100% { box-shadow: 0 0 20px hsl(45 90% 55% / 0.4); }
+  50% { box-shadow: 0 0 40px hsl(45 90% 55% / 0.6); }
+}
+
+.animate-fade-up {
+  animation: fadeUp 0.8s ease-out forwards;
+  opacity: 0;
+}
+
+.animate-pulse-gold {
+  animation: pulse-gold 3s ease-in-out infinite;
 }
