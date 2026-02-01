@@ -19,9 +19,10 @@
     <!-- SPA redirect handler for GitHub Pages -->
     <script>
       (function() {
-        var redirect = new URLSearchParams(window.location.search).get('redirect');
-        if (redirect) {
-          window.history.replaceState(null, '', decodeURIComponent(redirect));
+        var redirect = sessionStorage.redirect;
+        delete sessionStorage.redirect;
+        if (redirect && redirect !== location.href) {
+          history.replaceState(null, null, redirect);
         }
       })();
     </script>
