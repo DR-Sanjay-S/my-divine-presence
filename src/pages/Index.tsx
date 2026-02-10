@@ -1,10 +1,11 @@
 import { motion, useInView } from 'framer-motion';
-import { useRef, useEffect, useState } from 'react';
+import { useRef, useEffect, useState, useCallback } from 'react';
 import { 
   GraduationCap, Rocket, Users, Globe, Heart, 
-  ArrowRight, ArrowDown, Briefcase, Award, 
-  BookOpen, Code, Lightbulb, ExternalLink,
-  Mail, Linkedin, Twitter, MapPin
+  ArrowRight, ArrowDown, Briefcase, 
+  BookOpen, Code, Lightbulb,
+  Mail, Linkedin, Twitter, MapPin, Instagram,
+  CheckCircle, Star, Quote, Calendar, Trophy
 } from 'lucide-react';
 import sanjayPhoto from '@/assets/sanjay-profile.jpg';
 
@@ -15,11 +16,11 @@ const Section = ({ children, className = '', id }: { children: React.ReactNode; 
   return (
     <motion.section
       ref={ref}
+      id={id}
       initial={{ opacity: 0, y: 60 }}
       animate={isInView ? { opacity: 1, y: 0 } : {}}
       transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
       className={className}
-      id={id}
     >
       {children}
     </motion.section>
@@ -59,21 +60,71 @@ const Typewriter = ({ words }: { words: string[] }) => {
   );
 };
 
+// --- Smooth scroll helper ---
+const scrollTo = (id: string) => {
+  const el = document.getElementById(id);
+  if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+};
+
 // --- Data ---
 const whatIDo = [
-  { icon: GraduationCap, title: 'Teaching & Education', desc: 'Shaping minds through practical, real-world teaching that bridges academia and industry.' },
-  { icon: Rocket, title: 'Startup Building', desc: 'Founded Nexcubic — building systems that empower students and professionals alike.' },
-  { icon: Users, title: 'Internships & Mentorship', desc: 'Guiding hundreds of students through career decisions, mock interviews, and placements.' },
-  { icon: Code, title: 'Web & Technology', desc: 'Building modern web platforms, tools, and digital experiences that create real impact.' },
-  { icon: Heart, title: 'Social Impact', desc: 'Working with NGOs and communities to drive meaningful change through tech and education.' },
-  { icon: Lightbulb, title: 'Innovation Programs', desc: 'Designing hackathons, bootcamps, and innovation challenges for the next generation.' },
+  { icon: GraduationCap, title: 'Teaching & Education', desc: 'Shaping minds through practical, real-world teaching that bridges academia and industry. Designing curricula that prepare students for what actually matters.' },
+  { icon: Rocket, title: 'Startup Building (Nexcubic)', desc: 'Founded and leading Nexcubic — an ed-tech venture focused on internships, career acceleration, and building industry-ready professionals at scale.' },
+  { icon: Users, title: 'Internships & Mentorship', desc: 'Guiding hundreds of students through career decisions, mock interviews, resume building, and placements into top companies across India.' },
+  { icon: Code, title: 'Web & Technology', desc: 'Building modern web platforms, SaaS tools, and digital experiences. From frontend to deployment — shipping products that solve real problems.' },
+  { icon: Heart, title: 'Social Impact & NGO Work', desc: 'Partnering with NGOs and communities to drive meaningful change through technology, education drives, and digital literacy campaigns in underserved areas.' },
+  { icon: Lightbulb, title: 'Innovation Programs', desc: 'Designing and running hackathons, bootcamps, coding challenges, and innovation workshops that spark creativity in the next generation of builders.' },
 ];
 
 const experience = [
-  { role: 'Assistant Professor', org: 'Leading Academic Institution', period: '2020 – Present', desc: 'Teaching computer science, mentoring research scholars, and developing industry-aligned curricula.' },
-  { role: 'Founder & CEO', org: 'Nexcubic', period: '2021 – Present', desc: 'Building an ed-tech platform focused on internships, real-world projects, and career acceleration.' },
-  { role: 'Tech Mentor', org: 'Multiple Programs', period: '2019 – Present', desc: 'Conducted 500+ mock interviews, mentored startups, and guided students into top companies.' },
-  { role: 'Community Leader', org: 'Social Impact Projects', period: '2018 – Present', desc: 'Leading initiatives that connect technology with social good across rural and urban India.' },
+  { 
+    role: 'Assistant Professor', 
+    org: 'Leading Academic Institution', 
+    period: '2020 – Present',
+    type: 'Full-time',
+    highlights: [
+      'Teaching Computer Science & Engineering subjects across multiple semesters',
+      'Mentoring final-year students on research projects and dissertations',
+      'Developed industry-aligned curriculum with hands-on project components',
+      'Organized workshops on emerging technologies for 200+ students',
+    ]
+  },
+  { 
+    role: 'Founder & CEO', 
+    org: 'Nexcubic', 
+    period: '2021 – Present',
+    type: 'Startup',
+    highlights: [
+      'Built an ed-tech platform connecting students with real-world internships',
+      'Scaled to serve hundreds of students across multiple colleges',
+      'Developed career acceleration programs with industry partnerships',
+      'Created structured mentorship pipelines for first-generation professionals',
+    ]
+  },
+  { 
+    role: 'Tech Mentor & Career Coach', 
+    org: 'Multiple Programs & Institutions', 
+    period: '2019 – Present',
+    type: 'Mentorship',
+    highlights: [
+      'Conducted 500+ mock interviews preparing students for top-tier companies',
+      'Mentored early-stage startup founders on product and tech strategy',
+      'Led technical training bootcamps in web development and programming',
+      'Guided students into roles at MNCs, startups, and government organizations',
+    ]
+  },
+  { 
+    role: 'Community Leader & Social Changemaker', 
+    org: 'Social Impact Projects', 
+    period: '2018 – Present',
+    type: 'Volunteer',
+    highlights: [
+      'Led digital literacy initiatives in rural and semi-urban communities',
+      'Partnered with NGOs on education-focused technology projects',
+      'Organized free coding workshops for underprivileged students',
+      'Built awareness campaigns around tech careers for first-gen learners',
+    ]
+  },
 ];
 
 const stats = [
@@ -83,8 +134,48 @@ const stats = [
   { value: '1', label: 'Startup Founded' },
 ];
 
+const values = [
+  { icon: Star, title: 'Excellence', desc: 'Never settling for mediocre — in teaching, building, or mentoring.' },
+  { icon: CheckCircle, title: 'Accountability', desc: 'Taking full ownership of outcomes and leading by example.' },
+  { icon: Heart, title: 'Empathy', desc: 'Understanding every student\'s unique journey and meeting them where they are.' },
+  { icon: Trophy, title: 'Impact First', desc: 'Measuring success not by metrics, but by lives genuinely changed.' },
+];
+
+const testimonials = [
+  { name: 'A Mentee', text: '"Sanjay sir didn\'t just teach us code — he taught us how to think, prepare, and believe in ourselves."' },
+  { name: 'A Student', text: '"The mock interviews and career guidance I received completely changed the trajectory of my career."' },
+  { name: 'A Collaborator', text: '"Working with Sanjay on Nexcubic showed me what it means to build with genuine purpose."' },
+];
+
 // --- Main Component ---
 const Index = () => {
+  const [activeSection, setActiveSection] = useState('');
+
+  const handleScroll = useCallback(() => {
+    const sections = ['about', 'work', 'experience', 'values', 'testimonials', 'contact'];
+    for (const id of sections.reverse()) {
+      const el = document.getElementById(id);
+      if (el && el.getBoundingClientRect().top <= 200) {
+        setActiveSection(id);
+        return;
+      }
+    }
+    setActiveSection('');
+  }, []);
+
+  useEffect(() => {
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [handleScroll]);
+
+  const navItems = [
+    { label: 'About', id: 'about' },
+    { label: 'Work', id: 'work' },
+    { label: 'Experience', id: 'experience' },
+    { label: 'Values', id: 'values' },
+    { label: 'Contact', id: 'contact' },
+  ];
+
   return (
     <div className="min-h-screen bg-background overflow-x-hidden">
       {/* Navbar */}
@@ -95,38 +186,40 @@ const Index = () => {
         className="fixed top-0 left-0 right-0 z-50 glass"
       >
         <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
-          <a href="#" className="font-display text-xl font-bold tracking-tight">
+          <button onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} className="font-display text-xl font-bold tracking-tight cursor-pointer">
             <span className="text-gradient">S</span>
-            <span className="text-foreground">.</span>
-          </a>
+            <span className="text-foreground">anjay</span>
+          </button>
           <div className="hidden md:flex items-center gap-8">
-            {['About', 'Work', 'Experience', 'Contact'].map((item) => (
-              <a
-                key={item}
-                href={`#${item.toLowerCase()}`}
-                className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+            {navItems.map((item) => (
+              <button
+                key={item.id}
+                onClick={() => scrollTo(item.id)}
+                className={`text-sm transition-colors cursor-pointer ${
+                  activeSection === item.id 
+                    ? 'text-primary font-medium' 
+                    : 'text-muted-foreground hover:text-foreground'
+                }`}
               >
-                {item}
-              </a>
+                {item.label}
+              </button>
             ))}
           </div>
-          <a
-            href="#contact"
-            className="px-5 py-2 rounded-full bg-primary text-primary-foreground text-sm font-medium hover:opacity-90 transition-opacity"
+          <button
+            onClick={() => scrollTo('contact')}
+            className="px-5 py-2 rounded-full bg-primary text-primary-foreground text-sm font-medium hover:opacity-90 transition-opacity cursor-pointer"
           >
             Let's Talk
-          </a>
+          </button>
         </div>
       </motion.nav>
 
       {/* Hero */}
-      <section className="relative min-h-screen flex items-center justify-center px-6 grid-bg">
-        {/* Glow orb */}
+      <section className="relative min-h-screen flex items-center justify-center px-6 grid-bg pt-20">
         <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full bg-primary/5 blur-[120px] pointer-events-none" />
 
         <div className="relative z-10 max-w-5xl mx-auto w-full">
           <div className="flex flex-col lg:flex-row items-center gap-12 lg:gap-20">
-            {/* Text */}
             <div className="flex-1 text-center lg:text-left">
               <motion.div
                 initial={{ opacity: 0, y: 30 }}
@@ -165,23 +258,22 @@ const Index = () => {
                 transition={{ delay: 0.6, duration: 0.7 }}
                 className="flex flex-wrap gap-4 justify-center lg:justify-start"
               >
-                <a
-                  href="#work"
-                  className="group inline-flex items-center gap-2 px-6 py-3 rounded-full bg-primary text-primary-foreground font-medium hover:opacity-90 transition-all"
+                <button
+                  onClick={() => scrollTo('work')}
+                  className="group inline-flex items-center gap-2 px-6 py-3 rounded-full bg-primary text-primary-foreground font-medium hover:opacity-90 transition-all cursor-pointer"
                 >
                   View Work
                   <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                </a>
-                <a
-                  href="#contact"
-                  className="inline-flex items-center gap-2 px-6 py-3 rounded-full border border-border text-foreground font-medium hover:bg-secondary transition-colors"
+                </button>
+                <button
+                  onClick={() => scrollTo('contact')}
+                  className="inline-flex items-center gap-2 px-6 py-3 rounded-full border border-border text-foreground font-medium hover:bg-secondary transition-colors cursor-pointer"
                 >
                   Collaborate
-                </a>
+                </button>
               </motion.div>
             </div>
 
-            {/* Photo */}
             <motion.div
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
@@ -198,7 +290,6 @@ const Index = () => {
             </motion.div>
           </div>
 
-          {/* Scroll indicator */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -252,16 +343,21 @@ const Index = () => {
                 doesn't stop at the bell.
               </p>
               <p>
-                My mission is simple: <span className="text-foreground">build people who build the future.</span>
+                From conducting 500+ mock interviews to launching programs that connect students 
+                with real internships — every effort is aimed at one thing: 
+                <span className="text-foreground font-medium"> closing the gap between learning and doing.</span>
+              </p>
+              <p>
+                My mission is simple: <span className="text-foreground font-semibold">build people who build the future.</span>
               </p>
             </div>
           </div>
           <div className="grid grid-cols-2 gap-4">
             {[
-              { icon: BookOpen, label: 'Educator' },
-              { icon: Rocket, label: 'Founder' },
-              { icon: Users, label: 'Mentor' },
-              { icon: Globe, label: 'Changemaker' },
+              { icon: BookOpen, label: 'Educator', sub: 'Asst. Professor' },
+              { icon: Rocket, label: 'Founder', sub: 'Nexcubic CEO' },
+              { icon: Users, label: 'Mentor', sub: '500+ Students' },
+              { icon: Globe, label: 'Changemaker', sub: 'Community Impact' },
             ].map((item, i) => (
               <motion.div
                 key={i}
@@ -270,6 +366,7 @@ const Index = () => {
               >
                 <item.icon className="w-8 h-8 text-primary mx-auto mb-3" />
                 <p className="text-sm font-medium text-foreground">{item.label}</p>
+                <p className="text-xs text-muted-foreground mt-1">{item.sub}</p>
               </motion.div>
             ))}
           </div>
@@ -281,9 +378,12 @@ const Index = () => {
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-16">
             <p className="font-mono text-sm text-primary mb-3 uppercase tracking-widest">What I Do</p>
-            <h2 className="font-display text-4xl md:text-5xl font-bold">
+            <h2 className="font-display text-4xl md:text-5xl font-bold mb-4">
               Where I create <span className="text-gradient">impact</span>
             </h2>
+            <p className="text-muted-foreground max-w-2xl mx-auto">
+              From classrooms to startups, from code to communities — here's the full picture of what I pour my energy into every day.
+            </p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -294,8 +394,8 @@ const Index = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.08, duration: 0.5 }}
-                whileHover={{ y: -6, borderColor: 'hsl(160 84% 50% / 0.3)' }}
-                className="group p-8 rounded-xl border border-border bg-background/50 transition-all duration-300"
+                whileHover={{ y: -6 }}
+                className="group p-8 rounded-xl border border-border bg-background/50 transition-all duration-300 hover:border-primary/30"
               >
                 <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center mb-5 group-hover:bg-primary/20 transition-colors">
                   <item.icon className="w-6 h-6 text-primary" />
@@ -312,10 +412,13 @@ const Index = () => {
       <Section className="py-24 px-6" id="experience">
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-16">
-            <p className="font-mono text-sm text-primary mb-3 uppercase tracking-widest">Experience</p>
-            <h2 className="font-display text-4xl md:text-5xl font-bold">
+            <p className="font-mono text-sm text-primary mb-3 uppercase tracking-widest">Experience & Roles</p>
+            <h2 className="font-display text-4xl md:text-5xl font-bold mb-4">
               The <span className="text-gradient">journey</span> so far
             </h2>
+            <p className="text-muted-foreground max-w-2xl mx-auto">
+              Every role I've taken on has been driven by one goal — creating systems that uplift people and unlock potential.
+            </p>
           </div>
 
           <div className="space-y-0">
@@ -329,14 +432,88 @@ const Index = () => {
                 className="relative pl-8 pb-12 border-l border-border last:pb-0 group"
               >
                 <div className="absolute left-0 top-1 -translate-x-1/2 w-3 h-3 rounded-full bg-secondary border-2 border-primary group-hover:bg-primary transition-colors" />
-                <div className="flex flex-wrap items-baseline gap-3 mb-2">
+                <div className="flex flex-wrap items-center gap-3 mb-2">
                   <h3 className="font-display text-xl font-semibold">{item.role}</h3>
-                  <span className="font-mono text-xs text-primary">{item.period}</span>
+                  <span className="font-mono text-xs text-primary px-2 py-0.5 rounded-full bg-primary/10">{item.type}</span>
                 </div>
-                <p className="text-sm text-primary/80 mb-2 flex items-center gap-1">
-                  <Briefcase className="w-3 h-3" /> {item.org}
-                </p>
-                <p className="text-sm text-muted-foreground leading-relaxed">{item.desc}</p>
+                <div className="flex flex-wrap items-center gap-4 mb-3">
+                  <p className="text-sm text-primary/80 flex items-center gap-1">
+                    <Briefcase className="w-3 h-3" /> {item.org}
+                  </p>
+                  <p className="text-sm text-muted-foreground flex items-center gap-1">
+                    <Calendar className="w-3 h-3" /> {item.period}
+                  </p>
+                </div>
+                <ul className="space-y-2">
+                  {item.highlights.map((h, j) => (
+                    <li key={j} className="text-sm text-muted-foreground flex items-start gap-2">
+                      <CheckCircle className="w-4 h-4 text-primary/60 mt-0.5 shrink-0" />
+                      {h}
+                    </li>
+                  ))}
+                </ul>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </Section>
+
+      {/* Values */}
+      <Section className="py-24 px-6 bg-card/30" id="values">
+        <div className="max-w-5xl mx-auto">
+          <div className="text-center mb-16">
+            <p className="font-mono text-sm text-primary mb-3 uppercase tracking-widest">My Values</p>
+            <h2 className="font-display text-4xl md:text-5xl font-bold mb-4">
+              What I <span className="text-gradient">stand for</span>
+            </h2>
+            <p className="text-muted-foreground max-w-2xl mx-auto">
+              These aren't just words on a wall. These are the principles I bring into every classroom, every meeting, and every decision.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            {values.map((val, i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.1, duration: 0.5 }}
+                whileHover={{ y: -4 }}
+                className="p-6 rounded-xl glass text-center"
+              >
+                <val.icon className="w-8 h-8 text-primary mx-auto mb-4" />
+                <h3 className="font-display text-lg font-semibold mb-2">{val.title}</h3>
+                <p className="text-sm text-muted-foreground">{val.desc}</p>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </Section>
+
+      {/* Testimonials */}
+      <Section className="py-24 px-6" id="testimonials">
+        <div className="max-w-5xl mx-auto">
+          <div className="text-center mb-16">
+            <p className="font-mono text-sm text-primary mb-3 uppercase tracking-widest">Kind Words</p>
+            <h2 className="font-display text-4xl md:text-5xl font-bold mb-4">
+              What people <span className="text-gradient">say</span>
+            </h2>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {testimonials.map((t, i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.1, duration: 0.5 }}
+                className="p-8 rounded-xl border border-border bg-background/50"
+              >
+                <Quote className="w-6 h-6 text-primary/40 mb-4" />
+                <p className="text-sm text-muted-foreground leading-relaxed italic mb-4">{t.text}</p>
+                <p className="text-sm font-medium text-foreground">— {t.name}</p>
               </motion.div>
             ))}
           </div>
@@ -352,7 +529,7 @@ const Index = () => {
           </h2>
           <p className="text-muted-foreground mb-10 max-w-xl mx-auto">
             Whether it's a collaboration, a speaking invite, a mentoring opportunity, 
-            or just a conversation — I'm always open.
+            or just a conversation — I'm always open. Let's connect and create something lasting.
           </p>
           <div className="flex flex-wrap gap-4 justify-center mb-12">
             <a
@@ -364,18 +541,31 @@ const Index = () => {
               <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
             </a>
             <a
-              href="#"
+              href="https://linkedin.com/in/"
+              target="_blank"
+              rel="noopener noreferrer"
               className="inline-flex items-center gap-2 px-6 py-3 rounded-full border border-border text-foreground font-medium hover:bg-secondary transition-colors"
             >
               <Linkedin className="w-4 h-4" />
               LinkedIn
             </a>
             <a
-              href="#"
+              href="https://twitter.com/"
+              target="_blank"
+              rel="noopener noreferrer"
               className="inline-flex items-center gap-2 px-6 py-3 rounded-full border border-border text-foreground font-medium hover:bg-secondary transition-colors"
             >
               <Twitter className="w-4 h-4" />
               Twitter
+            </a>
+            <a
+              href="https://instagram.com/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 px-6 py-3 rounded-full border border-border text-foreground font-medium hover:bg-secondary transition-colors"
+            >
+              <Instagram className="w-4 h-4" />
+              Instagram
             </a>
           </div>
         </div>
@@ -384,9 +574,23 @@ const Index = () => {
       {/* Footer */}
       <footer className="py-10 px-6 border-t border-border">
         <div className="max-w-5xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
-          <p className="font-display text-lg font-bold">
-            <span className="text-gradient">Sanjay S</span>
-          </p>
+          <div>
+            <p className="font-display text-lg font-bold">
+              <span className="text-gradient">Sanjay S</span>
+            </p>
+            <p className="text-xs text-muted-foreground">Educator • Founder • Mentor</p>
+          </div>
+          <div className="flex items-center gap-6">
+            {navItems.map((item) => (
+              <button
+                key={item.id}
+                onClick={() => scrollTo(item.id)}
+                className="text-xs text-muted-foreground hover:text-foreground transition-colors cursor-pointer"
+              >
+                {item.label}
+              </button>
+            ))}
+          </div>
           <p className="font-mono text-xs text-muted-foreground">
             © {new Date().getFullYear()} · Built with purpose.
           </p>
