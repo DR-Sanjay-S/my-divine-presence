@@ -1,49 +1,48 @@
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700;900&family=JetBrains+Mono:wght@300;400;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@300;400;500&display=swap');
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* Sanjay S Note - Personal Power Journal */
-
 @layer base {
   :root {
-    --background: 220 15% 8%;
-    --foreground: 45 20% 95%;
+    --background: 0 0% 4%;
+    --foreground: 0 0% 95%;
 
-    --card: 220 15% 12%;
-    --card-foreground: 45 20% 95%;
+    --card: 0 0% 7%;
+    --card-foreground: 0 0% 95%;
 
-    --popover: 220 15% 12%;
-    --popover-foreground: 45 20% 95%;
+    --popover: 0 0% 7%;
+    --popover-foreground: 0 0% 95%;
 
-    --primary: 45 90% 55%;
-    --primary-foreground: 220 15% 8%;
+    --primary: 160 84% 50%;
+    --primary-foreground: 0 0% 4%;
 
-    --secondary: 220 15% 18%;
-    --secondary-foreground: 45 20% 95%;
+    --secondary: 0 0% 12%;
+    --secondary-foreground: 0 0% 95%;
 
-    --muted: 220 15% 20%;
-    --muted-foreground: 220 10% 60%;
+    --muted: 0 0% 15%;
+    --muted-foreground: 0 0% 55%;
 
-    --accent: 45 90% 55%;
-    --accent-foreground: 220 15% 8%;
+    --accent: 160 84% 50%;
+    --accent-foreground: 0 0% 4%;
 
     --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 220 15% 20%;
-    --input: 220 15% 15%;
-    --ring: 45 90% 55%;
+    --border: 0 0% 14%;
+    --input: 0 0% 12%;
+    --ring: 160 84% 50%;
 
-    --radius: 0.5rem;
+    --radius: 0.75rem;
 
-    /* Custom colors */
     --gold: 45 90% 55%;
     --gold-dark: 45 80% 40%;
-    --ink-black: 220 15% 5%;
-    --paper: 45 30% 96%;
+    --ink-black: 0 0% 3%;
+    --paper: 0 0% 96%;
     --blood-red: 0 70% 45%;
+    --emerald: 160 84% 50%;
+    --emerald-dark: 160 70% 35%;
 
     --sidebar-background: 0 0% 98%;
     --sidebar-foreground: 240 5.3% 26.1%;
@@ -63,62 +62,51 @@
 
   body {
     @apply bg-background text-foreground antialiased;
-    font-family: 'JetBrains Mono', monospace;
+    font-family: 'Inter', sans-serif;
   }
 
   h1, h2, h3, h4, h5, h6 {
-    font-family: 'Playfair Display', serif;
+    font-family: 'Space Grotesk', sans-serif;
+  }
+
+  code, .font-mono {
+    font-family: 'JetBrains Mono', monospace;
   }
 }
 
 @layer components {
-  .text-gold {
-    background: linear-gradient(135deg, hsl(45 90% 55%), hsl(45 80% 40%));
+  .text-gradient {
+    background: linear-gradient(135deg, hsl(160 84% 50%), hsl(160 60% 70%));
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
   }
 
-  .glow-gold {
-    box-shadow: 0 0 40px hsl(45 90% 55% / 0.3), 0 0 80px hsl(45 90% 55% / 0.1);
+  .glow-emerald {
+    box-shadow: 0 0 40px hsl(160 84% 50% / 0.15), 0 0 80px hsl(160 84% 50% / 0.05);
   }
 
-  .notebook-line {
-    border-bottom: 1px solid hsl(220 15% 20%);
+  .glass {
+    background: hsl(0 0% 100% / 0.03);
+    backdrop-filter: blur(12px);
+    border: 1px solid hsl(0 0% 100% / 0.06);
   }
 
-  .page-texture {
+  .grid-bg {
     background-image: 
-      linear-gradient(90deg, transparent 79px, hsl(0 70% 45% / 0.3) 79px, hsl(0 70% 45% / 0.3) 81px, transparent 81px),
-      linear-gradient(hsl(220 15% 18% / 0.5) 1px, transparent 1px);
-    background-size: 100% 100%, 100% 2rem;
+      linear-gradient(hsl(0 0% 100% / 0.03) 1px, transparent 1px),
+      linear-gradient(90deg, hsl(0 0% 100% / 0.03) 1px, transparent 1px);
+    background-size: 80px 80px;
   }
 }
 
-@keyframes fadeUp {
-  from { opacity: 0; transform: translateY(30px); }
-  to { opacity: 1; transform: translateY(0); }
+/* Smooth scroll */
+html {
+  scroll-behavior: smooth;
 }
 
-@keyframes typewriter {
-  from { width: 0; }
-  to { width: 100%; }
-}
-
-@keyframes blink {
-  50% { border-color: transparent; }
-}
-
-@keyframes pulse-gold {
-  0%, 100% { box-shadow: 0 0 20px hsl(45 90% 55% / 0.4); }
-  50% { box-shadow: 0 0 40px hsl(45 90% 55% / 0.6); }
-}
-
-.animate-fade-up {
-  animation: fadeUp 0.8s ease-out forwards;
-  opacity: 0;
-}
-
-.animate-pulse-gold {
-  animation: pulse-gold 3s ease-in-out infinite;
+/* Selection color */
+::selection {
+  background: hsl(160 84% 50% / 0.3);
+  color: hsl(0 0% 95%);
 }
