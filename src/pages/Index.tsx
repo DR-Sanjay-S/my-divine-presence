@@ -1,9 +1,13 @@
 import { motion, useInView } from 'framer-motion';
 import { useRef } from 'react';
 import {
-  Mail, Linkedin, Twitter, Instagram, Github,
-  MapPin, Phone, ExternalLink, Calendar,
-  GraduationCap, Briefcase, Code, Users, Globe
+  Mail, Linkedin, Instagram, Phone,
+  MapPin, ExternalLink, Calendar,
+  GraduationCap, Briefcase, Code, Users, Globe,
+  Award, BookOpen, Building2, Cpu, Database,
+  Palette, Brain, Shield, Rocket, Heart,
+  MonitorSmartphone, Server, Layers, Terminal,
+  FileCode2, Blocks, Sparkles
 } from 'lucide-react';
 import sanjayPhoto from '@/assets/sanjay-profile.jpg';
 
@@ -25,34 +29,110 @@ const FadeIn = ({ children, className = '', delay = 0 }: { children: React.React
 };
 
 // --- Data ---
-const skills = [
-  'JavaScript', 'React', 'Python', 'Java', 'HTML/CSS', 'TypeScript',
-  'Node.js', 'MongoDB', 'MySQL', 'Git', 'Tailwind CSS', 'PHP',
-  'C', 'C++', 'Data Structures', 'Web Development'
+const techSkills = [
+  { name: 'React', icon: Blocks },
+  { name: 'Node.js', icon: Server },
+  { name: 'Express.js', icon: Server },
+  { name: 'MongoDB', icon: Database },
+  { name: 'MySQL', icon: Database },
+  { name: 'Python', icon: Terminal },
+  { name: 'Django', icon: Layers },
+  { name: 'Flask', icon: Layers },
+  { name: 'JavaScript', icon: FileCode2 },
+  { name: 'TypeScript', icon: FileCode2 },
+  { name: 'HTML/CSS', icon: Code },
+  { name: 'Tailwind CSS', icon: Palette },
+  { name: 'Java', icon: Cpu },
+  { name: 'C', icon: Terminal },
+  { name: 'C++', icon: Terminal },
+  { name: 'PHP', icon: Code },
+  { name: 'Git', icon: Blocks },
+  { name: 'MERN Stack', icon: Layers },
+  { name: 'Python Full Stack', icon: Layers },
+  { name: 'Vibe Coding', icon: Sparkles },
+  { name: 'AI & ML', icon: Brain },
+  { name: 'Generative AI', icon: Brain },
+  { name: 'SEO', icon: Globe },
+  { name: 'Digital Marketing', icon: MonitorSmartphone },
+  { name: 'Data Structures', icon: Blocks },
+  { name: 'Web Development', icon: Globe },
 ];
 
 const experience = [
   {
-    role: 'Assistant Professor — BCA Department',
-    org: 'Charans Degree College',
-    period: 'Jul 2025 – Present',
-    location: 'India',
+    role: 'Founder',
+    org: 'Nexcubic',
+    period: 'Nov 2025 – Present',
+    location: 'Bengaluru, India',
+    highlights: [
+      'Leading a dynamic team dedicated to building powerful digital solutions for startups, enterprises, and individuals',
+      'Specializing in website & app development, AI agents, branding, UI/UX design, and digital marketing',
+      'Combining technology, creativity, and strategy to transform ideas into impactful digital experiences',
+    ],
+    link: 'https://nexcubic.com',
+  },
+  {
+    role: 'Assistant Professor – BCA Department',
+    org: "Charan's Degree College",
+    period: 'Mar 2025 – Present',
+    location: 'Bengaluru, India',
     highlights: [
       'Teaching BCA students across core CS subjects including Programming, DBMS, and Web Technologies',
       'Designing industry-aligned curriculum with hands-on project components',
       'Mentoring students on academic projects, career paths, and interview preparation',
-    ]
+    ],
   },
   {
-    role: 'Computer Science Lecturer',
-    org: 'Charans PU College',
-    period: 'Oct 2024 – Jul 2025',
-    location: 'India',
+    role: 'Assistant Professor – BCA Department',
+    org: 'Siddaganga Institute of Management and Science',
+    period: 'Mar 2025 – Oct 2025',
+    location: 'Bengaluru, India',
+    highlights: [
+      'Delivered quality education in computer science and application development',
+      'Mentored students, fostered innovation, integrated practical knowledge with theoretical concepts',
+      'Focused on research, curriculum development, and emerging technologies',
+    ],
+  },
+  {
+    role: 'Computer Science Lecturer – PUC',
+    org: "Charan's PU College",
+    period: 'Oct 2024 – Mar 2025',
+    location: 'Bengaluru, India',
     highlights: [
       'Taught Computer Science to PU students with practical coding sessions',
-      'Introduced real-world problem-solving and project-based learning approaches',
-      'Guided students in competitive programming and tech skill development',
-    ]
+      'Simplified complex concepts and guided students in practical applications',
+      'Prepared students for higher education and careers in the digital age',
+    ],
+  },
+  {
+    role: 'Insurance Advisor',
+    org: 'Edelweiss Life Insurance',
+    period: 'Jul 2024 – Oct 2025',
+    location: 'Bengaluru, India',
+    highlights: [
+      'Provided clients with tailored insurance solutions meeting financial goals and protection needs',
+      'Built strong client relationships with a client-first approach',
+    ],
+  },
+  {
+    role: 'Property Advisor',
+    org: 'Metro Homes',
+    period: 'May 2024 – Oct 2025',
+    location: 'Bengaluru, India',
+    highlights: [
+      'Guided buyers, sellers, and investors through real estate decisions',
+      'Ensured smooth and successful property transactions with personalized service',
+    ],
+  },
+  {
+    role: 'Assistant Teacher – Computer Science',
+    org: 'Wisdom International Public School',
+    period: 'Oct 2023 – Mar 2024',
+    location: 'Bengaluru, India',
+    highlights: [
+      'Taught programming, hardware/software concepts, and internet safety to school students',
+      'Encouraged hands-on learning and fostered interest in technology',
+    ],
   },
   {
     role: 'Freelance Web Developer',
@@ -60,32 +140,54 @@ const experience = [
     period: '2023 – Present',
     location: 'Remote',
     highlights: [
-      'Building modern web applications for clients using React, Node.js, and modern stacks',
-      'Delivering responsive, high-performance websites and web apps',
-      'More details coming soon...',
-    ]
+      'Building modern web applications using React, Node.js, MERN stack, and Python full stack',
+      'Delivering responsive, high-performance websites and web apps for clients',
+    ],
   },
 ];
 
 const education = [
   {
+    degree: 'CA Intermediate',
+    school: 'The Institute of Chartered Accountants of India (ICAI)',
+    period: 'June 2025',
+    desc: 'Pursuing CA with focus on accounting, auditing, and financial management.',
+  },
+  {
     degree: 'Master of Computer Applications (MCA)',
-    school: 'University',
-    period: '2023 – 2025',
-    desc: 'Completed MCA with focus on software development, data structures, and full-stack web technologies.',
+    school: 'Amity University',
+    period: 'Oct 2023 – May 2025',
+    desc: 'Specialized in Artificial Intelligence (AI) and Machine Learning (ML). Completed MCA with focus on software development and full-stack web technologies.',
   },
   {
     degree: 'Bachelor of Computer Applications (BCA)',
-    school: 'University',
-    period: '2020 – 2023',
-    desc: 'Built strong fundamentals in programming, database management, and computer science theory.',
+    school: 'Pinnacle Institute of Management & Science',
+    period: 'Sep 2020 – Sep 2023',
+    desc: 'Built strong fundamentals in computer programming, database management, and computer science theory.',
+  },
+  {
+    degree: 'Pre-University (PUC) – Computer Science',
+    school: 'ICS Mahesh PU College',
+    period: '2019 – 2020',
+    desc: 'Completed pre-university education with Computer Science specialization.',
   },
 ];
 
+const certifications = [
+  'Leadership And Motivation in Organization',
+  'Professional And Life Skills',
+  'Strategic Human Resource Management',
+  'Google Ads for Beginners',
+  'Generative AI Mastermind',
+];
+
 const languages = [
-  { name: 'English', flag: '🇬🇧' },
-  { name: 'Kannada', flag: '🇮🇳' },
-  { name: 'Hindi', flag: '🇮🇳' },
+  { name: 'English', flag: '🇬🇧', level: 'Professional Working' },
+  { name: 'Kannada', flag: '🇮🇳', level: 'Native / Bilingual' },
+  { name: 'Hindi', flag: '🇮🇳', level: 'Professional Working' },
+  { name: 'Tamil', flag: '🇮🇳', level: 'Limited Working' },
+  { name: 'Telugu', flag: '🇮🇳', level: 'Limited Working' },
+  { name: 'Urdu', flag: '🇮🇳', level: 'Limited Working' },
 ];
 
 const Index = () => {
@@ -111,7 +213,7 @@ const Index = () => {
                       </svg>
                     </span>
                   </h1>
-                  <p className="text-sm text-muted-foreground">he/him</p>
+                  <p className="text-xs text-muted-foreground">Founder · Professor · CA Inter</p>
                 </div>
               </div>
             </FadeIn>
@@ -121,7 +223,7 @@ const Index = () => {
               <div>
                 <h3 className="font-mono text-xs text-muted-foreground uppercase tracking-widest mb-2">About</h3>
                 <p className="text-sm text-muted-foreground leading-relaxed">
-                  Assistant Professor & CS Lecturer with a passion for teaching, mentoring students, and building modern web applications. MCA graduate (2025) who believes in bridging the gap between academics and real-world tech.
+                  My mission is to make technology education more practical, engaging, and future-ready. I conduct AI and Tech seminars helping students and institutions understand real-world applications of AI, ML, and Automation.
                 </p>
               </div>
             </FadeIn>
@@ -131,69 +233,88 @@ const Index = () => {
               <div>
                 <h3 className="font-mono text-xs text-muted-foreground uppercase tracking-widest mb-3">Contact</h3>
                 <div className="space-y-2.5">
-                  <a href="mailto:sanjay@godsanjays.in" className="flex items-center gap-2.5 text-sm text-muted-foreground hover:text-foreground transition-colors">
-                    <Mail className="w-3.5 h-3.5 text-primary/70" />
-                    sanjay@godsanjays.in
+                  <a href="tel:+919740501114" className="flex items-center gap-2.5 text-sm text-muted-foreground hover:text-foreground transition-colors">
+                    <Phone className="w-3.5 h-3.5 text-primary/70" />
+                    +91 9740501114
                   </a>
-                  <a href="https://godsanjays.in" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2.5 text-sm text-muted-foreground hover:text-foreground transition-colors">
+                  <a href="mailto:educate.sanjays@gmail.com" className="flex items-center gap-2.5 text-sm text-muted-foreground hover:text-foreground transition-colors">
+                    <Mail className="w-3.5 h-3.5 text-primary/70" />
+                    educate.sanjays@gmail.com
+                  </a>
+                  <a href="mailto:sanjays@nexcubic.com" className="flex items-center gap-2.5 text-sm text-muted-foreground hover:text-foreground transition-colors">
+                    <Building2 className="w-3.5 h-3.5 text-primary/70" />
+                    sanjays@nexcubic.com
+                  </a>
+                  <a href="https://nexcubic.com" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2.5 text-sm text-muted-foreground hover:text-foreground transition-colors">
                     <Globe className="w-3.5 h-3.5 text-primary/70" />
-                    godsanjays.in
+                    nexcubic.com
                   </a>
                   <span className="flex items-center gap-2.5 text-sm text-muted-foreground">
                     <MapPin className="w-3.5 h-3.5 text-primary/70" />
-                    India
+                    Bengaluru, Karnataka, India
                   </span>
                 </div>
               </div>
             </FadeIn>
 
-            {/* Skills */}
+            {/* Languages */}
             <FadeIn delay={0.15}>
               <div>
-                <h3 className="font-mono text-xs text-muted-foreground uppercase tracking-widest mb-3">Skills</h3>
-                <div className="flex flex-wrap gap-2">
-                  {skills.map((skill) => (
-                    <span key={skill} className="px-2.5 py-1 rounded-md bg-secondary text-xs text-secondary-foreground font-medium">
-                      {skill}
-                    </span>
-                  ))}
-                </div>
-              </div>
-            </FadeIn>
-
-            {/* Languages */}
-            <FadeIn delay={0.2}>
-              <div>
                 <h3 className="font-mono text-xs text-muted-foreground uppercase tracking-widest mb-3">Languages</h3>
-                <div className="flex flex-wrap gap-3">
+                <div className="space-y-2">
                   {languages.map((lang) => (
-                    <span key={lang.name} className="flex items-center gap-1.5 text-sm text-muted-foreground">
-                      <span>{lang.flag}</span> {lang.name}
-                    </span>
+                    <div key={lang.name} className="flex items-center justify-between text-sm">
+                      <span className="flex items-center gap-1.5 text-muted-foreground">
+                        <span>{lang.flag}</span> {lang.name}
+                      </span>
+                      <span className="text-xs text-muted-foreground/60">{lang.level}</span>
+                    </div>
                   ))}
                 </div>
               </div>
             </FadeIn>
 
             {/* Social Links */}
-            <FadeIn delay={0.25}>
-              <div className="flex items-center gap-4 pt-2">
-                {[
-                  { icon: Twitter, href: 'https://twitter.com/' },
-                  { icon: Github, href: 'https://github.com/' },
-                  { icon: Instagram, href: 'https://instagram.com/' },
-                  { icon: Linkedin, href: 'https://linkedin.com/in/' },
-                ].map((social, i) => (
+            <FadeIn delay={0.2}>
+              <div>
+                <h3 className="font-mono text-xs text-muted-foreground uppercase tracking-widest mb-3">Connect</h3>
+                <div className="space-y-2.5">
                   <a
-                    key={i}
-                    href={social.href}
+                    href="https://www.linkedin.com/in/sanjay-s-258781240/"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-muted-foreground hover:text-foreground transition-colors"
+                    className="flex items-center gap-2.5 text-sm text-muted-foreground hover:text-foreground transition-colors"
                   >
-                    <social.icon className="w-4.5 h-4.5" />
+                    <Linkedin className="w-3.5 h-3.5 text-primary/70" />
+                    LinkedIn Profile
+                    <ExternalLink className="w-3 h-3 ml-auto opacity-40" />
                   </a>
-                ))}
+                  <a
+                    href="https://www.instagram.com/sanjay.s.journey/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-2.5 text-sm text-muted-foreground hover:text-foreground transition-colors"
+                  >
+                    <Instagram className="w-3.5 h-3.5 text-primary/70" />
+                    @sanjay.s.journey
+                    <ExternalLink className="w-3 h-3 ml-auto opacity-40" />
+                  </a>
+                </div>
+              </div>
+            </FadeIn>
+
+            {/* Certifications */}
+            <FadeIn delay={0.25}>
+              <div>
+                <h3 className="font-mono text-xs text-muted-foreground uppercase tracking-widest mb-3">Certifications</h3>
+                <div className="space-y-2">
+                  {certifications.map((cert) => (
+                    <div key={cert} className="flex items-start gap-2 text-sm text-muted-foreground">
+                      <Award className="w-3.5 h-3.5 text-primary/70 mt-0.5 shrink-0" />
+                      {cert}
+                    </div>
+                  ))}
+                </div>
               </div>
             </FadeIn>
           </aside>
@@ -206,20 +327,48 @@ const Index = () => {
                 <h3 className="font-mono text-xs text-muted-foreground uppercase tracking-widest mb-3">Intro</h3>
                 <div className="space-y-3 text-sm text-muted-foreground leading-relaxed">
                   <p>
-                    I'm <span className="text-foreground font-medium">Sanjay S</span>, an Assistant Professor and CS Lecturer based in India.
-                    My passion lies in teaching computer science, mentoring students, and building modern web applications as a freelancer.
+                    I'm <span className="text-foreground font-medium">Sanjay S</span>, the Founder of{' '}
+                    <a href="https://nexcubic.com" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">Nexcubic</a>,
+                    an Assistant Professor, and a CA Intermediate aspirant based in Bengaluru, India.
                   </p>
                   <p>
-                    After completing my <span className="text-foreground font-medium">MCA in 2025</span>, I joined the education field,
-                    first as a CS Lecturer at Charans PU College and now as an Assistant Professor at Charans Degree College,
-                    teaching BCA students. I emphasize practical learning and real-world readiness.
+                    As an educator, I believe in inspiring curiosity, creativity, and innovation — helping learners go beyond textbooks to explore the possibilities of the digital era.
+                    I conduct <span className="text-foreground font-medium">AI and Tech seminars</span> that help students and institutions understand real-world applications of Artificial Intelligence, Machine Learning, and Automation.
+                  </p>
+                  <p>
+                    After completing my <span className="text-foreground font-medium">MCA from Amity University in 2025</span>, I joined education —
+                    first as a CS Lecturer at Charan's PU College, then as an Assistant Professor at Siddaganga Institute and Charan's Degree College.
+                    Alongside, I founded <span className="text-foreground font-medium">Nexcubic</span> to build powerful digital solutions for businesses worldwide.
                   </p>
                 </div>
               </section>
             </FadeIn>
 
-            {/* Experience */}
+            {/* Skills & Technologies */}
             <FadeIn delay={0.05}>
+              <section>
+                <h3 className="font-mono text-xs text-muted-foreground uppercase tracking-widest mb-4">Skills & Technologies</h3>
+                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2">
+                  {techSkills.map((skill, i) => (
+                    <motion.div
+                      key={skill.name}
+                      initial={{ opacity: 0, scale: 0.9 }}
+                      whileInView={{ opacity: 1, scale: 1 }}
+                      viewport={{ once: true }}
+                      transition={{ delay: i * 0.03, duration: 0.3 }}
+                      whileHover={{ y: -2, scale: 1.03 }}
+                      className="flex items-center gap-2 px-3 py-2 rounded-lg bg-secondary/50 border border-border hover:border-primary/30 transition-colors"
+                    >
+                      <skill.icon className="w-3.5 h-3.5 text-primary/70 shrink-0" />
+                      <span className="text-xs text-secondary-foreground font-medium truncate">{skill.name}</span>
+                    </motion.div>
+                  ))}
+                </div>
+              </section>
+            </FadeIn>
+
+            {/* Experience */}
+            <FadeIn delay={0.1}>
               <section>
                 <h3 className="font-mono text-xs text-muted-foreground uppercase tracking-widest mb-6">Experience</h3>
                 <div className="space-y-8">
@@ -229,7 +378,7 @@ const Index = () => {
                       initial={{ opacity: 0, y: 20 }}
                       whileInView={{ opacity: 1, y: 0 }}
                       viewport={{ once: true }}
-                      transition={{ delay: i * 0.08, duration: 0.4 }}
+                      transition={{ delay: i * 0.06, duration: 0.4 }}
                       className="group"
                     >
                       <div className="flex items-start gap-4">
@@ -238,6 +387,7 @@ const Index = () => {
                         </div>
                         <div className="flex-1">
                           <h4 className="font-display text-base font-semibold text-foreground">{exp.role}</h4>
+                          <p className="text-sm text-primary/80 font-medium">{exp.org}</p>
                           <div className="flex flex-wrap items-center gap-3 mt-1 mb-2">
                             <span className="text-xs text-muted-foreground flex items-center gap-1">
                               <Calendar className="w-3 h-3" /> {exp.period}
@@ -253,6 +403,17 @@ const Index = () => {
                               </li>
                             ))}
                           </ul>
+                          {'link' in exp && exp.link && (
+                            <a
+                              href={exp.link}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="inline-flex items-center gap-1.5 mt-2 text-xs text-primary hover:underline"
+                            >
+                              <ExternalLink className="w-3 h-3" />
+                              Visit {exp.org}
+                            </a>
+                          )}
                         </div>
                       </div>
                     </motion.div>
@@ -262,7 +423,7 @@ const Index = () => {
             </FadeIn>
 
             {/* Education */}
-            <FadeIn delay={0.1}>
+            <FadeIn delay={0.15}>
               <section>
                 <h3 className="font-mono text-xs text-muted-foreground uppercase tracking-widest mb-6">Education</h3>
                 <div className="space-y-8">
@@ -281,11 +442,11 @@ const Index = () => {
                         </div>
                         <div>
                           <h4 className="font-display text-base font-semibold text-foreground">{edu.degree}</h4>
+                          <p className="text-sm text-primary/80 font-medium">{edu.school}</p>
                           <div className="flex flex-wrap items-center gap-3 mt-1 mb-2">
                             <span className="text-xs text-muted-foreground flex items-center gap-1">
                               <Calendar className="w-3 h-3" /> {edu.period}
                             </span>
-                            <span className="text-xs text-muted-foreground">{edu.school}</span>
                           </div>
                           <p className="text-sm text-muted-foreground leading-relaxed">{edu.desc}</p>
                         </div>
@@ -297,15 +458,17 @@ const Index = () => {
             </FadeIn>
 
             {/* What I Do */}
-            <FadeIn delay={0.15}>
+            <FadeIn delay={0.2}>
               <section>
                 <h3 className="font-mono text-xs text-muted-foreground uppercase tracking-widest mb-6">What I Do</h3>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   {[
-                    { icon: GraduationCap, title: 'Teaching & Education', desc: 'Teaching CS to PU & BCA students with hands-on, practical approach.' },
-                    { icon: Code, title: 'Freelance Web Dev', desc: 'Building modern web apps using React, Node.js, and full-stack tech.' },
-                    { icon: Users, title: 'Student Mentorship', desc: 'Career guidance, mock interviews, and interview preparation for students.' },
-                    { icon: Globe, title: 'Tech & Innovation', desc: 'Exploring new technologies and bringing them into the classroom.' },
+                    { icon: Building2, title: 'Nexcubic – Digital Solutions', desc: 'Leading website/app development, AI agents, branding, UI/UX, and digital marketing for businesses.' },
+                    { icon: GraduationCap, title: 'Teaching & Education', desc: 'Teaching CS to PU & BCA students with hands-on, practical approach at multiple institutions.' },
+                    { icon: Code, title: 'Full Stack Development', desc: 'Building modern web apps using MERN stack, Python full stack, and cutting-edge technologies.' },
+                    { icon: Brain, title: 'AI & Tech Seminars', desc: 'Conducting seminars on AI, ML, Generative AI, and Automation for students and institutions.' },
+                    { icon: Users, title: 'Student Mentorship', desc: 'Career guidance, mock interviews, interview preparation, and academic excellence mentoring.' },
+                    { icon: Rocket, title: 'Startup & Innovation', desc: 'Helping startups and enterprises establish strong online presence and accelerate growth.' },
                   ].map((item, i) => (
                     <motion.div
                       key={i}
@@ -321,29 +484,60 @@ const Index = () => {
               </section>
             </FadeIn>
 
+            {/* Areas of Focus */}
+            <FadeIn delay={0.25}>
+              <section>
+                <h3 className="font-mono text-xs text-muted-foreground uppercase tracking-widest mb-4">Areas of Focus</h3>
+                <div className="flex flex-wrap gap-2">
+                  {[
+                    'Artificial Intelligence & Machine Learning',
+                    'Generative AI and Automation',
+                    'Practical Technology Education',
+                    'Student Mentorship & Academic Excellence',
+                    'Social Media Marketing',
+                    'Search Engine Optimization (SEO)',
+                    'AI for Leadership',
+                  ].map((area) => (
+                    <span key={area} className="px-3 py-1.5 rounded-full bg-primary/10 text-xs text-primary font-medium border border-primary/20">
+                      {area}
+                    </span>
+                  ))}
+                </div>
+              </section>
+            </FadeIn>
+
             {/* CTA */}
-            <FadeIn delay={0.2}>
+            <FadeIn delay={0.3}>
               <section className="p-8 rounded-xl border border-border bg-card/30 text-center">
                 <h3 className="font-display text-xl font-bold text-foreground mb-2">Let's work together</h3>
                 <p className="text-sm text-muted-foreground mb-6">
-                  Open to freelance projects, collaborations, and speaking opportunities.
+                  Open to collaborations, seminars, educational partnerships, and freelance projects.
                 </p>
                 <div className="flex flex-wrap gap-3 justify-center">
                   <a
-                    href="mailto:sanjay@godsanjays.in"
+                    href="mailto:educate.sanjays@gmail.com"
                     className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-primary text-primary-foreground text-sm font-medium hover:opacity-90 transition-opacity"
                   >
                     <Mail className="w-4 h-4" />
                     Get in Touch
                   </a>
                   <a
-                    href="https://linkedin.com/in/"
+                    href="https://www.linkedin.com/in/sanjay-s-258781240/"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full border border-border text-foreground text-sm font-medium hover:bg-secondary transition-colors"
                   >
                     <Linkedin className="w-4 h-4" />
                     LinkedIn
+                  </a>
+                  <a
+                    href="https://nexcubic.com"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full border border-border text-foreground text-sm font-medium hover:bg-secondary transition-colors"
+                  >
+                    <Globe className="w-4 h-4" />
+                    Nexcubic
                   </a>
                 </div>
               </section>
@@ -355,8 +549,19 @@ const Index = () => {
         <footer className="mt-16 pt-8 border-t border-border flex flex-col sm:flex-row items-center justify-between gap-4">
           <p className="font-display text-sm font-bold">
             <span className="text-gradient">Sanjay S</span>
-            <span className="text-muted-foreground font-normal ml-2 text-xs">Assistant Professor • Freelancer • Mentor</span>
+            <span className="text-muted-foreground font-normal ml-2 text-xs">Founder · Professor · Mentor</span>
           </p>
+          <div className="flex items-center gap-4">
+            <a href="https://www.linkedin.com/in/sanjay-s-258781240/" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-foreground transition-colors">
+              <Linkedin className="w-4 h-4" />
+            </a>
+            <a href="https://www.instagram.com/sanjay.s.journey/" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-foreground transition-colors">
+              <Instagram className="w-4 h-4" />
+            </a>
+            <a href="mailto:educate.sanjays@gmail.com" className="text-muted-foreground hover:text-foreground transition-colors">
+              <Mail className="w-4 h-4" />
+            </a>
+          </div>
           <p className="font-mono text-xs text-muted-foreground">
             © {new Date().getFullYear()} · Built with purpose.
           </p>
