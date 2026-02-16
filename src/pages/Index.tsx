@@ -29,33 +29,47 @@ const FadeIn = ({ children, className = '', delay = 0 }: { children: React.React
 };
 
 // --- Data ---
-const techSkills = [
-  { name: 'React', icon: Blocks },
-  { name: 'Node.js', icon: Server },
-  { name: 'Express.js', icon: Server },
-  { name: 'MongoDB', icon: Database },
-  { name: 'MySQL', icon: Database },
-  { name: 'Python', icon: Terminal },
-  { name: 'Django', icon: Layers },
-  { name: 'Flask', icon: Layers },
-  { name: 'JavaScript', icon: FileCode2 },
-  { name: 'TypeScript', icon: FileCode2 },
-  { name: 'HTML/CSS', icon: Code },
-  { name: 'Tailwind CSS', icon: Palette },
-  { name: 'Java', icon: Cpu },
-  { name: 'C', icon: Terminal },
-  { name: 'C++', icon: Terminal },
-  { name: 'PHP', icon: Code },
-  { name: 'Git', icon: Blocks },
-  { name: 'MERN Stack', icon: Layers },
-  { name: 'Python Full Stack', icon: Layers },
-  { name: 'Vibe Coding', icon: Sparkles },
-  { name: 'AI & ML', icon: Brain },
-  { name: 'Generative AI', icon: Brain },
-  { name: 'SEO', icon: Globe },
-  { name: 'Digital Marketing', icon: MonitorSmartphone },
-  { name: 'Data Structures', icon: Blocks },
-  { name: 'Web Development', icon: Globe },
+const skillCategories = [
+  {
+    title: 'Languages',
+    icon: FileCode2,
+    skills: ['JavaScript', 'TypeScript', 'Python', 'Java', 'C', 'C++', 'PHP'],
+  },
+  {
+    title: 'Frontend',
+    icon: MonitorSmartphone,
+    skills: ['React.js', 'Next.js', 'Tailwind CSS', 'Bootstrap', 'HTML5', 'CSS3', 'Framer Motion'],
+  },
+  {
+    title: 'Backend',
+    icon: Server,
+    skills: ['Node.js', 'Express.js', 'Django', 'Flask', 'REST APIs'],
+  },
+  {
+    title: 'Databases',
+    icon: Database,
+    skills: ['MongoDB', 'MySQL', 'PostgreSQL', 'Firebase'],
+  },
+  {
+    title: 'Full Stack',
+    icon: Layers,
+    skills: ['MERN Stack', 'Python Full Stack', 'Vibe Coding'],
+  },
+  {
+    title: 'AI & Emerging Tech',
+    icon: Brain,
+    skills: ['Artificial Intelligence', 'Machine Learning', 'Generative AI', 'Prompt Engineering'],
+  },
+  {
+    title: 'Tools & Platforms',
+    icon: Blocks,
+    skills: ['Git & GitHub', 'VS Code', 'Postman', 'Vercel', 'Netlify', 'Figma'],
+  },
+  {
+    title: 'Other Skills',
+    icon: Rocket,
+    skills: ['SEO', 'Digital Marketing', 'Data Structures', 'UI/UX Design'],
+  },
 ];
 
 const experience = [
@@ -347,20 +361,35 @@ const Index = () => {
             {/* Skills & Technologies */}
             <FadeIn delay={0.05}>
               <section>
-                <h3 className="font-mono text-xs text-muted-foreground uppercase tracking-widest mb-4">Skills & Technologies</h3>
-                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2">
-                  {techSkills.map((skill, i) => (
+                <h3 className="font-mono text-xs text-muted-foreground uppercase tracking-widest mb-6">Skills & Technologies</h3>
+                <div className="space-y-6">
+                  {skillCategories.map((cat, ci) => (
                     <motion.div
-                      key={skill.name}
-                      initial={{ opacity: 0, scale: 0.9 }}
-                      whileInView={{ opacity: 1, scale: 1 }}
+                      key={cat.title}
+                      initial={{ opacity: 0, y: 15 }}
+                      whileInView={{ opacity: 1, y: 0 }}
                       viewport={{ once: true }}
-                      transition={{ delay: i * 0.03, duration: 0.3 }}
-                      whileHover={{ y: -2, scale: 1.03 }}
-                      className="flex items-center gap-2 px-3 py-2 rounded-lg bg-secondary/50 border border-border hover:border-primary/30 transition-colors"
+                      transition={{ delay: ci * 0.05, duration: 0.4 }}
                     >
-                      <skill.icon className="w-3.5 h-3.5 text-primary/70 shrink-0" />
-                      <span className="text-xs text-secondary-foreground font-medium truncate">{skill.name}</span>
+                      <div className="flex items-center gap-2 mb-3">
+                        <cat.icon className="w-4 h-4 text-primary" />
+                        <h4 className="text-sm font-semibold text-foreground">{cat.title}</h4>
+                      </div>
+                      <div className="flex flex-wrap gap-2">
+                        {cat.skills.map((skill, si) => (
+                          <motion.span
+                            key={skill}
+                            initial={{ opacity: 0, scale: 0.9 }}
+                            whileInView={{ opacity: 1, scale: 1 }}
+                            viewport={{ once: true }}
+                            transition={{ delay: si * 0.02, duration: 0.25 }}
+                            whileHover={{ y: -2, scale: 1.05 }}
+                            className="px-3 py-1.5 text-xs font-medium rounded-full bg-secondary/50 border border-border text-secondary-foreground hover:border-primary/40 hover:bg-primary/5 transition-all cursor-default"
+                          >
+                            {skill}
+                          </motion.span>
+                        ))}
+                      </div>
                     </motion.div>
                   ))}
                 </div>
