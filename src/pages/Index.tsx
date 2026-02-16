@@ -7,8 +7,9 @@ import {
   Award, BookOpen, Building2, Cpu, Database,
   Palette, Brain, Shield, Rocket, Heart,
   MonitorSmartphone, Server, Layers, Terminal,
-  FileCode2, Blocks, Sparkles
+  FileCode2, Blocks, Sparkles, Download
 } from 'lucide-react';
+import { generateResumePdf } from '@/lib/generateResumePdf';
 import sanjayPhoto from '@/assets/sanjay-profile.jpg';
 
 // --- Animated wrapper ---
@@ -330,6 +331,19 @@ const Index = () => {
                   ))}
                 </div>
               </div>
+            </FadeIn>
+
+            {/* Download Resume */}
+            <FadeIn delay={0.3}>
+              <motion.button
+                onClick={generateResumePdf}
+                whileHover={{ scale: 1.03 }}
+                whileTap={{ scale: 0.97 }}
+                className="w-full flex items-center justify-center gap-2 px-4 py-3 rounded-lg bg-primary text-primary-foreground font-medium text-sm hover:bg-primary/90 transition-colors"
+              >
+                <Download className="w-4 h-4" />
+                Download Resume
+              </motion.button>
             </FadeIn>
           </aside>
 
