@@ -215,7 +215,7 @@ const Index = () => {
             {/* Profile Card */}
             <FadeIn>
               <div className="flex items-center gap-4">
-                <div className="w-16 h-16 rounded-full overflow-hidden border-2 border-primary/30 shrink-0">
+                <div className="w-24 h-24 rounded-full overflow-hidden border-2 border-primary/30 shrink-0">
                   <img src={sanjayPhoto} alt="Sanjay S" className="w-full h-full object-cover" />
                 </div>
                 <div>
