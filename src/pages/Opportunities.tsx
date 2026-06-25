@@ -60,7 +60,7 @@ export default function Opportunities() {
     qc.invalidateQueries({ queryKey: ["opportunities"] });
   }
   async function moveStatus(o: any, newStatus: string) {
-    await supabase.from("opportunities").update({ status: newStatus }).eq("id", o.id);
+    await supabase.from("opportunities").update({ status: newStatus as any }).eq("id", o.id);
     qc.invalidateQueries({ queryKey: ["opportunities"] });
   }
 
