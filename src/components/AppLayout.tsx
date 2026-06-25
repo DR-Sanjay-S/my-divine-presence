@@ -24,6 +24,7 @@ import {
   BookOpen,
   Search,
   Sparkles,
+  Settings as SettingsIcon,
 } from "lucide-react";
 import profilePhoto from "@/assets/sanjay-profile.jpg";
 
@@ -37,6 +38,7 @@ const navItems = [
   { title: "Notes", url: "/notes", icon: StickyNote },
   { title: "Journal", url: "/journal", icon: BookOpen },
   { title: "Search", url: "/search", icon: Search },
+  { title: "Settings", url: "/settings", icon: SettingsIcon },
 ];
 
 function AppSidebar() {
