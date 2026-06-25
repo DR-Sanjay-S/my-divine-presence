@@ -3,7 +3,16 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { HashRouter, Routes, Route } from "react-router-dom";
-import Index from "./pages/Index";
+import { AppLayout } from "./components/AppLayout";
+import Dashboard from "./pages/Dashboard";
+import People from "./pages/People";
+import Organizations from "./pages/Organizations";
+import Opportunities from "./pages/Opportunities";
+import Podcasts from "./pages/Podcasts";
+import Events from "./pages/Events";
+import Notes from "./pages/Notes";
+import Journal from "./pages/Journal";
+import Search from "./pages/Search";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -15,7 +24,17 @@ const App = () => (
       <Sonner />
       <HashRouter>
         <Routes>
-          <Route path="/" element={<Index />} />
+          <Route element={<AppLayout />}>
+            <Route path="/" element={<Dashboard />} />
+            <Route path="/people" element={<People />} />
+            <Route path="/organizations" element={<Organizations />} />
+            <Route path="/opportunities" element={<Opportunities />} />
+            <Route path="/podcasts" element={<Podcasts />} />
+            <Route path="/events" element={<Events />} />
+            <Route path="/notes" element={<Notes />} />
+            <Route path="/journal" element={<Journal />} />
+            <Route path="/search" element={<Search />} />
+          </Route>
           <Route path="*" element={<NotFound />} />
         </Routes>
       </HashRouter>
