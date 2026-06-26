@@ -1,102 +1,73 @@
-# My Personal Book — Personal Founder OS
+# GOD PLAN OS — Migration & Upgrade Plan
 
-A private, single-user CRM and second brain — combining Notion, LinkedIn CRM, contact manager, opportunity tracker, podcast pipeline, and journal.
+This is a large scope. I'll break it into shippable phases so you can use the app between phases instead of waiting weeks for one giant drop. Please confirm the phase order and answer the questions at the bottom before I start.
 
-## Approach
+## Phase 1 — Auth + Supabase backbone (ship first)
 
-Replace the current portfolio with a multi-page application. Use **Lovable Cloud** (managed Postgres + storage) for all data. No login required (single-user). Mobile-first, dark theme inspired by Linear/Notion/Superhuman. Keep your existing profile photo for the sidebar avatar.
+Goal: real multi-user app with your existing modules backed by Supabase.
 
-## Design System
+1. **Database**
+   - Create `profiles` table (linked to `auth.users`, auto-created on signup via trigger).
+   - Add `user_id uuid not null` to every existing table: `people`, `organizations`, `opportunities`, `podcasts`, `events`, `notes`, `journal_entries`, `tags`, `relationships`.
+   - Drop the current permissive RLS policies. Replace with strict `auth.uid() = user_id` policies (SELECT/INSERT/UPDATE/DELETE).
+   - Add indexes on `user_id` and common filter columns.
+   - Add `updated_at` triggers where missing.
 
-- **Theme**: Dark mode only, minimal, founder-focused
-- **Palette**: Black `#0A0A0A` background, white `#FAFAFA` text, gray scale, subtle emerald accent (kept from current theme)
-- **Typography**: Space Grotesk (display), Inter (body), JetBrains Mono (mono)
-- **Layout**: Collapsible left sidebar nav, main content area, modal-based create/edit forms
+2. **Auth**
+   - Email + password (signup, login, logout).
+   - Google OAuth (managed, no setup needed from you).
+   - Forgot password + `/reset-password` page.
+   - Auto-login after signup, persistent session, secure logout.
+   - Route guard: unauthenticated users → `/auth`.
 
-## Navigation (Sidebar)
+3. **Auth UI ("Founder OS" theme)**
+   - Single `/auth` page with Login / Signup / Forgot tabs.
+   - Dark glassmorphism, animated gradient mesh background, floating particles, Framer Motion fade-ins.
+   - GOD PLAN logo + tagline "Your Personal Founder Operating System".
+   - Google button + email/password form.
 
-Dashboard · People · Organizations · Opportunities · Podcasts · Events · Notes · Journal · Search
+4. **Client swap**
+   - Replace `src/lib/localClient.ts` usage with the real `@/integrations/supabase/client`.
+   - Keep a one-time "Import from local backup" button on Settings so your existing local data isn't lost — it reads the old localStorage rows and inserts them into Supabase under the current user.
+   - Keep Export JSON / Import JSON / Clear all in Settings.
 
-## Pages
+After Phase 1 you have: real auth, real DB, RLS isolation, all existing pages working per-user.
 
-1. **Dashboard** — Stat cards (total people, founders, investors, professors, students, active opps, upcoming events, follow-ups, podcast pipeline) + widgets (recent contacts, recent notes, follow-ups due, upcoming meetings, opportunity status pipeline)
-2. **People** — Searchable/filterable table with cards view; create/edit modal with all fields incl. categories, relationship status, tags, follow-up date, related entities
-3. **Organizations** — Grid of org cards with logo, type filters, detail drawer
-4. **Opportunities** — Kanban board by status (Idea → Won/Lost) + list view; filter by type/priority
-5. **Podcasts** — Pipeline view by guest status (Idea → Published)
-6. **Events** — List + calendar-style view; "Auto-aggregation coming soon" placeholder
-7. **Notes** — Markdown editor with tags, links to people/orgs (note-style cards)
-8. **Journal** — Daily entry form (mood, wins, lessons, challenges, ideas) + timeline of past entries
-9. **Search** — Global instant search across all entities
+## Phase 2 — New modules
 
-## AI-Ready Placeholders (UI only, no logic yet)
+New tables + pages, same RLS pattern:
+- `tasks` (title, description, priority, status, due_date, person_id, org_id) with **Board / List / Calendar** views.
+- `companies` — re-uses `organizations` but adds founder/stage/industry/status fields if missing.
+- `investors`, `founders` — views/filters over `people` with a `category` flag (avoid duplicating data).
+- `calendar_events` — unified calendar source combining tasks, events, podcasts, follow-ups.
+- `collaborations`, `campus_ambassadors` — separate tables.
+- `activity_logs` — auto-written on create/update/delete via triggers for the Daily/Monthly History pages.
+- `documents` — Supabase Storage bucket `documents` (private) + metadata table.
 
-Cards on dashboard for: Follow-up Suggestions, Relationship Intelligence, Opportunity Recommendations, Event Recommendations, Network Mapping — all marked "Coming Soon".
+## Phase 3 — Cross-cutting features
 
-## Database Schema (Lovable Cloud)
+- **Smart Calendar** page (day/week/month) using `react-big-calendar` or FullCalendar, sourced from `calendar_events` view.
+- **Global Search** — Postgres `tsvector` across people/orgs/notes/tasks/podcasts/events/journal with a single endpoint + `/search` page.
+- **Follow-up system** — dashboard widget querying `follow_up_date <= today` across people + tasks.
+- **Dashboard** — stat cards + charts (Recharts): growth, opportunity pipeline, podcast pipeline, task status.
+- **Notification center** — bell icon, queries upcoming follow-ups/tasks/events for next 7 days.
+- **Activity History** pages (Today / This Month) from `activity_logs`.
+- **Founder Network Map** — `react-force-graph-2d` visualization of `relationships`.
+- **Import/Export** — CSV/Excel via `papaparse` + `xlsx`; JSON already done. "Download Full Backup" zips everything for the current user.
+- **Light mode toggle** (dark stays default).
 
-```text
-people                organizations           opportunities
-- id                  - id                    - id
-- name                - name                  - title
-- photo_url           - logo_url              - type (enum)
-- company             - website               - status (enum)
-- role                - industry              - value
-- category (enum)     - type (enum)           - priority
-- phone               - description           - expected_date
-- email               - founder               - notes
-- linkedin            - notes                 - created_at
-- website
-- location            podcasts                events
-- status (enum)       - id                    - id
-- notes               - guest_name            - name
-- follow_up_date      - organization          - date
-- created_at          - status (enum)         - location
-                      - recording_date        - organizer
-notes                 - publishing_date       - registration_link
-- id                  - topics                - type (enum)
-- title               - notes                 - notes
-- content (md)
-- tags                journal_entries         tags (lookup)
-- created_at          - id                    - id, name
-                      - entry_date
-relationships         - mood                  
-(join table for       - wins                  
-people↔opps,          - lessons               
-people↔orgs,          - challenges            
-people↔podcasts,      - ideas                 
-note↔people, etc.)
-```
+## Tech additions
+- `@supabase/supabase-js` (already present), Framer Motion (present), Recharts, react-big-calendar, papaparse, xlsx, react-force-graph-2d, date-fns.
 
-All enums (categories, statuses, types) implemented as Postgres enums or text with check constraints.
-
-## Tech Notes
-
-- **Backend**: Lovable Cloud (Supabase under the hood) for database + photo/logo storage
-- **No authentication** — single-user app, all data accessible
-- **State**: TanStack Query for data fetching/caching
-- **Forms**: react-hook-form + zod validation
-- **Routing**: React Router with sidebar layout
-- **Components**: Existing shadcn/ui set (Card, Dialog, Table, Tabs, etc.)
-- **Routes**: `/`, `/people`, `/organizations`, `/opportunities`, `/podcasts`, `/events`, `/notes`, `/journal`, `/search`
-- **Future-ready**: Schema includes timestamps + soft enum fields for AI features later
-
-## Build Order
-
-1. Enable Lovable Cloud + create all 9 tables with seed enums
-2. App shell: sidebar layout + routing + dark theme tokens
-3. Dashboard with live stat queries
-4. People CRM (most-used; full CRUD + filters)
-5. Organizations + Opportunities (Kanban)
-6. Podcasts + Events
-7. Notes + Journal
-8. Global Search
-9. Polish + mobile responsive pass
-
-## What Gets Removed
-
-The current single-page portfolio (`src/pages/Index.tsx` becomes the new Dashboard). Your profile photo (`src/assets/sanjay-profile.jpg`) stays, used in the sidebar avatar. Resume PDF generator stays available but not linked from main UI.
+## Out-of-scope clarifications
+- "Google Calendar sync" (two-way) is a big external integration — I'll build the Google Calendar **UI style**, not real sync, unless you explicitly want OAuth Calendar API later.
+- Real-time push notifications (browser/email) are out of scope for now; in-app bell only.
 
 ---
 
-**Approve to start building.** I'll enable Lovable Cloud first, set up the schema, then build out pages in the order above.
+## Questions before I start
+
+1. **Phase 1 only first, or do you want me to keep going straight through Phases 2 and 3 in one long session?** (Phase 1 alone is already a big migration; doing all three in one go means a longer wait before you can test anything.)
+2. **Existing localStorage data** — do you want me to (a) auto-migrate it to Supabase on first login, (b) add a manual "Import local backup" button in Settings, or (c) discard it?
+3. **Google sign-in** — enable it by default alongside email/password? (Recommended.)
+4. **Light mode** — required in Phase 1, or fine to defer to Phase 3?
