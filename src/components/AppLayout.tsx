@@ -23,10 +23,10 @@ import {
   StickyNote,
   BookOpen,
   Search,
-  Sparkles,
+  LogOut,
   Settings as SettingsIcon,
 } from "lucide-react";
-import profilePhoto from "@/assets/sanjay-profile.jpg";
+import { useAuth } from "@/contexts/AuthContext";
 
 const navItems = [
   { title: "Dashboard", url: "/", icon: LayoutDashboard },
