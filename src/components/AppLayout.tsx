@@ -119,7 +119,7 @@ export function AppLayout() {
           <header className="h-12 flex items-center border-b border-border px-3 sticky top-0 bg-background/80 backdrop-blur-xl z-30">
             <SidebarTrigger />
             <div className="ml-3 text-xs text-muted-foreground font-mono tracking-wider">
-              MY PERSONAL BOOK
+              GOD PLAN OS
             </div>
           </header>
           <main className="flex-1 overflow-x-hidden">
