@@ -45,23 +45,32 @@ function AppSidebar() {
   const { state } = useSidebar();
   const collapsed = state === "collapsed";
   const { pathname } = useLocation();
+  const { user, signOut } = useAuth();
   const isActive = (url: string) =>
     url === "/" ? pathname === "/" : pathname.startsWith(url);
+
+  const initials = (user?.user_metadata?.full_name || user?.email || "U")
+    .split(/[\s@.]+/)
+    .map((s: string) => s[0])
+    .filter(Boolean)
+    .slice(0, 2)
+    .join("")
+    .toUpperCase();
 
   return (
     <Sidebar collapsible="icon">
       <SidebarHeader className="border-b border-sidebar-border">
         <div className="flex items-center gap-3 px-2 py-2">
-          <div className="relative w-9 h-9 shrink-0 rounded-lg overflow-hidden ring-1 ring-primary/40">
-            <img src={profilePhoto} alt="Sanjay" className="w-full h-full object-cover" />
+          <div className="relative w-9 h-9 shrink-0 rounded-lg overflow-hidden ring-1 ring-primary/40 bg-gradient-to-br from-primary/30 to-emerald-500/20 flex items-center justify-center">
+            <span className="text-xs font-semibold text-primary">{initials}</span>
           </div>
           {!collapsed && (
             <div className="min-w-0">
               <div className="text-sm font-semibold text-sidebar-foreground truncate">
-                My Personal Book
+                GOD PLAN OS
               </div>
-              <div className="text-[10px] text-muted-foreground font-mono tracking-wider">
-                FOUNDER OS
+              <div className="text-[10px] text-muted-foreground font-mono tracking-wider truncate">
+                {user?.email ?? "FOUNDER OS"}
               </div>
             </div>
           )}
@@ -88,12 +97,14 @@ function AppSidebar() {
       </SidebarContent>
 
       <SidebarFooter className="border-t border-sidebar-border">
-        {!collapsed && (
-          <div className="px-2 py-2 text-[10px] text-muted-foreground flex items-center gap-1.5">
-            <Sparkles className="h-3 w-3" />
-            <span className="font-mono">AI features coming soon</span>
-          </div>
-        )}
+        <SidebarMenu>
+          <SidebarMenuItem>
+            <SidebarMenuButton onClick={() => signOut()} tooltip="Sign out">
+              <LogOut className="h-4 w-4 shrink-0" />
+              {!collapsed && <span>Sign out</span>}
+            </SidebarMenuButton>
+          </SidebarMenuItem>
+        </SidebarMenu>
       </SidebarFooter>
     </Sidebar>
   );
