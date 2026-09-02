@@ -49,12 +49,6 @@ export default function Auth() {
     }
   };
 
-  const google = async () => {
-    setBusy(true);
-    const { error } = await signInWithGoogle();
-    if (error) toast.error(error);
-    setBusy(false);
-  };
 
   return (
     <div className="min-h-screen w-full relative overflow-hidden bg-[#06070a] flex items-center justify-center px-4">
