@@ -12,7 +12,7 @@ import { toast } from "sonner";
 type Mode = "login" | "signup" | "forgot";
 
 export default function Auth() {
-  const { user, signInWithPassword, signUp, signInWithGoogle, resetPassword } = useAuth();
+  const { user, signInWithPassword, signUp, resetPassword } = useAuth();
   const navigate = useNavigate();
   const [mode, setMode] = useState<Mode>("login");
   const [email, setEmail] = useState("");
@@ -202,16 +202,5 @@ function Field({
         className="pl-10 h-11 bg-white/[0.04] border-white/10 text-white placeholder:text-white/30 focus-visible:ring-primary/50"
       />
     </div>
-  );
-}
-
-function GoogleIcon() {
-  return (
-    <svg viewBox="0 0 24 24" className="h-4 w-4 mr-2" aria-hidden>
-      <path
-        fill="#EA4335"
-        d="M12 10.2v3.9h5.5c-.2 1.4-1.6 4.1-5.5 4.1-3.3 0-6-2.7-6-6.1s2.7-6.1 6-6.1c1.9 0 3.1.8 3.8 1.5l2.6-2.5C16.9 3.5 14.7 2.5 12 2.5 6.8 2.5 2.6 6.7 2.6 12s4.2 9.5 9.4 9.5c5.4 0 9-3.8 9-9.2 0-.6-.1-1.1-.2-1.6H12z"
-      />
-    </svg>
   );
 }
