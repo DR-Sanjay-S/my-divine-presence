@@ -167,21 +167,6 @@ export default function Auth() {
             </div>
           )}
 
-          <div className="relative flex items-center my-5">
-            <div className="flex-1 h-px bg-white/10" />
-            <span className="px-3 text-[10px] font-mono tracking-widest text-white/40">OR</span>
-            <div className="flex-1 h-px bg-white/10" />
-          </div>
-
-          <Button
-            type="button"
-            variant="outline"
-            disabled={busy}
-            onClick={google}
-            className="w-full h-11 bg-white/5 border-white/10 hover:bg-white/10 text-white"
-          >
-            <GoogleIcon /> Continue with Google
-          </Button>
         </div>
 
         <p className="text-center text-[11px] text-white/40 mt-6 font-mono tracking-wider">
