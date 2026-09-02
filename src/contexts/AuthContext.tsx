@@ -1,7 +1,6 @@
 import { createContext, useContext, useEffect, useState, ReactNode } from "react";
 import type { Session, User } from "@supabase/supabase-js";
 import { supabase } from "@/integrations/supabase/client";
-import { lovable } from "@/integrations/lovable";
 
 interface AuthCtx {
   user: User | null;
@@ -9,7 +8,6 @@ interface AuthCtx {
   loading: boolean;
   signInWithPassword: (email: string, password: string) => Promise<{ error: string | null }>;
   signUp: (email: string, password: string, fullName?: string) => Promise<{ error: string | null }>;
-  signInWithGoogle: () => Promise<{ error: string | null }>;
   signOut: () => Promise<void>;
   resetPassword: (email: string) => Promise<{ error: string | null }>;
   updatePassword: (newPassword: string) => Promise<{ error: string | null }>;
@@ -52,14 +50,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     return { error: error?.message ?? null };
   };
 
-  const signInWithGoogle = async () => {
-    const result = await lovable.auth.signInWithOAuth("google", {
-      redirect_uri: window.location.origin,
-    });
-    if (result.error) return { error: (result.error as any)?.message ?? String(result.error) };
-    return { error: null };
-  };
-
   const signOut = async () => {
     await supabase.auth.signOut();
   };
@@ -78,7 +68,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   return (
     <AuthContext.Provider
-      value={{ user, session, loading, signInWithPassword, signUp, signInWithGoogle, signOut, resetPassword, updatePassword }}
+      value={{ user, session, loading, signInWithPassword, signUp, signOut, resetPassword, updatePassword }}
     >
       {children}
     </AuthContext.Provider>
