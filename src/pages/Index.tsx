@@ -1,617 +1,247 @@
-import { motion, useInView } from 'framer-motion';
-import { useRef } from 'react';
+import { FormEvent, useEffect, useState } from "react";
+import { motion, useReducedMotion } from "framer-motion";
 import {
-  Mail, Linkedin, Instagram, Phone,
-  MapPin, ExternalLink, Calendar,
-  GraduationCap, Briefcase, Code, Users, Globe,
-  Award, BookOpen, Building2, Cpu, Database,
-  Palette, Brain, Shield, Rocket, Heart,
-  MonitorSmartphone, Server, Layers, Terminal,
-  FileCode2, Blocks, Sparkles, Download
-} from 'lucide-react';
-import { generateResumePdf } from '@/lib/generateResumePdf';
-import sanjayPhoto from '@/assets/sanjay-profile.jpg';
+  ArrowDownRight, ArrowUp, Award, BookOpen, BriefcaseBusiness, Building2,
+  CalendarDays, ChevronRight, Code2, Database, ExternalLink, GraduationCap,
+  Instagram, Linkedin, Mail, MapPin, Menu, MessageCircle, Moon, Phone,
+  Presentation, Rocket, Send, Sparkles, Sun, Users, X,
+} from "lucide-react";
+import { Button } from "@/components/ui/button";
+import sanjayPhoto from "@/assets/sanjay-profile.jpg";
 
-// --- Animated wrapper ---
-const FadeIn = ({ children, className = '', delay = 0 }: { children: React.ReactNode; className?: string; delay?: number }) => {
-  const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: '-50px' });
-  return (
-    <motion.div
-      ref={ref}
-      initial={{ opacity: 0, y: 20 }}
-      animate={isInView ? { opacity: 1, y: 0 } : {}}
-      transition={{ duration: 0.5, delay, ease: [0.22, 1, 0.36, 1] }}
-      className={className}
-    >
-      {children}
-    </motion.div>
-  );
-};
-
-// --- Data ---
-const skillCategories = [
-  {
-    title: 'Languages',
-    icon: FileCode2,
-    skills: ['JavaScript', 'TypeScript', 'Python', 'Java', 'C', 'C++', 'PHP'],
-  },
-  {
-    title: 'Frontend',
-    icon: MonitorSmartphone,
-    skills: ['React.js', 'Next.js', 'Tailwind CSS', 'Bootstrap', 'HTML5', 'CSS3', 'Framer Motion'],
-  },
-  {
-    title: 'Backend',
-    icon: Server,
-    skills: ['Node.js', 'Express.js', 'Django', 'Flask', 'REST APIs'],
-  },
-  {
-    title: 'Databases',
-    icon: Database,
-    skills: ['MongoDB', 'MySQL', 'PostgreSQL', 'Firebase'],
-  },
-  {
-    title: 'Full Stack',
-    icon: Layers,
-    skills: ['MERN Stack', 'Python Full Stack', 'Vibe Coding'],
-  },
-  {
-    title: 'AI & Emerging Tech',
-    icon: Brain,
-    skills: ['Artificial Intelligence', 'Machine Learning', 'Generative AI', 'Prompt Engineering'],
-  },
-  {
-    title: 'Tools & Platforms',
-    icon: Blocks,
-    skills: ['Git & GitHub', 'VS Code', 'Postman', 'Vercel', 'Netlify', 'Figma'],
-  },
-  {
-    title: 'Other Skills',
-    icon: Rocket,
-    skills: ['SEO', 'Digital Marketing', 'Data Structures', 'UI/UX Design'],
-  },
-];
+const links = ["about", "experience", "ventures", "skills", "certifications", "community", "connect", "contact"];
+const taglines = ["Founder, Nexcubic", "Community & Ecosystem Builder", "Educator", "AI & ML Specialist"];
 
 const experience = [
-  {
-    role: 'Founder',
-    org: 'Nexcubic',
-    period: 'Nov 2025 – Present',
-    location: 'Bengaluru, India',
-    highlights: [
-      'Leading a dynamic team dedicated to building powerful digital solutions for startups, enterprises, and individuals',
-      'Specializing in website & app development, AI agents, branding, UI/UX design, and digital marketing',
-      'Combining technology, creativity, and strategy to transform ideas into impactful digital experiences',
-    ],
-    link: 'https://nexcubic.com',
-  },
-  {
-    role: 'Assistant Professor – BCA Department',
-    org: "Charan's Degree College",
-    period: 'Mar 2025 – Present',
-    location: 'Bengaluru, India',
-    highlights: [
-      'Teaching BCA students across core CS subjects including Programming, DBMS, and Web Technologies',
-      'Designing industry-aligned curriculum with hands-on project components',
-      'Mentoring students on academic projects, career paths, and interview preparation',
-    ],
-  },
-  {
-    role: 'Assistant Professor – BCA Department',
-    org: 'Siddaganga Institute of Management and Science',
-    period: 'Mar 2025 – Oct 2025',
-    location: 'Bengaluru, India',
-    highlights: [
-      'Delivered quality education in computer science and application development',
-      'Mentored students, fostered innovation, integrated practical knowledge with theoretical concepts',
-      'Focused on research, curriculum development, and emerging technologies',
-    ],
-  },
-  {
-    role: 'Computer Science Lecturer – PUC',
-    org: "Charan's PU College",
-    period: 'Oct 2024 – Mar 2025',
-    location: 'Bengaluru, India',
-    highlights: [
-      'Taught Computer Science to PU students with practical coding sessions',
-      'Simplified complex concepts and guided students in practical applications',
-      'Prepared students for higher education and careers in the digital age',
-    ],
-  },
-  {
-    role: 'Insurance Advisor',
-    org: 'Edelweiss Life Insurance',
-    period: 'Jul 2024 – Oct 2025',
-    location: 'Bengaluru, India',
-    highlights: [
-      'Provided clients with tailored insurance solutions meeting financial goals and protection needs',
-      'Built strong client relationships with a client-first approach',
-    ],
-  },
-  {
-    role: 'Property Advisor',
-    org: 'Metro Homes',
-    period: 'May 2024 – Oct 2025',
-    location: 'Bengaluru, India',
-    highlights: [
-      'Guided buyers, sellers, and investors through real estate decisions',
-      'Ensured smooth and successful property transactions with personalized service',
-    ],
-  },
-  {
-    role: 'Assistant Teacher – Computer Science',
-    org: 'Wisdom International Public School',
-    period: 'Oct 2023 – Mar 2024',
-    location: 'Bengaluru, India',
-    highlights: [
-      'Taught programming, hardware/software concepts, and internet safety to school students',
-      'Encouraged hands-on learning and fostered interest in technology',
-    ],
-  },
-  {
-    role: 'Freelance Web Developer',
-    org: 'Self-Employed',
-    period: '2023 – Present',
-    location: 'Remote',
-    highlights: [
-      'Building modern web applications using React, Node.js, MERN stack, and Python full stack',
-      'Delivering responsive, high-performance websites and web apps for clients',
-    ],
-  },
+  { role: "Program Coordinator — AI & ML Programs", org: "Charan's Degree College", period: "Present", icon: Sparkles, detail: "Coordinating industry-aware AI and machine learning learning paths, faculty initiatives, and student outcomes." },
+  { role: "Assistant Professor — Computer Science", org: "Charan's Degree College", period: "2025 — Present", icon: GraduationCap, detail: "Teaching BCA students across programming, databases, web technology, artificial intelligence, and applied computing." },
+  { role: "Computer Science Lecturer", org: "Charan's PU College", period: "2024 — 2025", icon: BookOpen, detail: "Made core computing concepts practical through demonstrations, lab work, and structured academic guidance." },
+  { role: "Assistant Teacher — Computer Science", org: "Wisdom International School", period: "2023 — 2024", icon: Presentation, detail: "Introduced school students to programming, digital literacy, hardware, software, and safe technology use." },
+  { role: "Sales Manager", org: "Metro Homes", period: "2024 — 2025", icon: Building2, detail: "Led relationship-focused property advisory, sales conversations, and client decision support." },
+  { role: "Insurance Advisor", org: "Edelweiss Life Insurance", period: "2024 — 2025", icon: BriefcaseBusiness, detail: "Helped clients understand protection needs and choose suitable long-term financial solutions." },
 ];
 
-const education = [
-  {
-    degree: 'CA Intermediate',
-    school: 'The Institute of Chartered Accountants of India (ICAI)',
-    period: 'June 2025',
-    desc: 'Pursuing CA with focus on accounting, auditing, and financial management.',
-  },
-  {
-    degree: 'Master of Computer Applications (MCA)',
-    school: 'Amity University',
-    period: 'Oct 2023 – May 2025',
-    desc: 'Specialized in Artificial Intelligence (AI) and Machine Learning (ML). Completed MCA with focus on software development and full-stack web technologies.',
-  },
-  {
-    degree: 'Bachelor of Computer Applications (BCA)',
-    school: 'Pinnacle Institute of Management & Science',
-    period: 'Sep 2020 – Sep 2023',
-    desc: 'Built strong fundamentals in computer programming, database management, and computer science theory.',
-  },
-  {
-    degree: 'Pre-University (PUC) – Computer Science',
-    school: 'ICS Mahesh PU College',
-    period: '2019 – 2020',
-    desc: 'Completed pre-university education with Computer Science specialization.',
-  },
+const ventures = [
+  { name: "Nexcubic", role: "Founder", mark: "NX", description: "AI-driven digital solutions agency.", reveal: "Building websites, applications, AI agents, brands, and growth systems for ambitious organizations.", href: "https://nexcubic.com" },
+  { name: "SowMate", role: "Director & Co-Founder", mark: "SM", description: "Social impact, education, and sustainability.", reveal: "Creating initiatives that connect responsible progress with stronger communities and access to learning." },
+  { name: "Nurturex", role: "Founder", mark: "NT", description: "A sustainable agriculture venture.", reveal: "Exploring practical technology and community models that help cultivation become more resilient." },
+  { name: "Upbring Hut", role: "Founder", mark: "UH", description: "Interior design and brand experiences.", reveal: "Shaping expressive spaces and visual identities through a clear, human-centered design process." },
+];
+
+const skills = [
+  { title: "Programming & Development", icon: Code2, items: ["HTML", "CSS", "JavaScript", "MERN Stack", "C", "C++", "ASP.NET", "VB.NET"] },
+  { title: "AI & Data", icon: Sparkles, items: ["Artificial Intelligence", "Machine Learning", "Prompt Engineering", "Power BI", "Tableau", "SQL", "Data Visualization"] },
+  { title: "UI/UX & Tools", icon: Rocket, items: ["Figma", "Canva", "Wireframing", "MS Office"] },
+  { title: "Development Tools", icon: Database, items: ["GitHub", "VS Code", "Postman", "Firebase", "MongoDB", "React.js", "Node.js"] },
 ];
 
 const certifications = [
-  'Leadership And Motivation in Organization',
-  'Professional And Life Skills',
-  'Strategic Human Resource Management',
-  'Google Ads for Beginners',
-  'Generative AI Mastermind',
+  { title: "Strategic Human Resource Management", issuer: "Amity University", mark: "AU" },
+  { title: "Professional and Life Skills", issuer: "Amity University", mark: "AU" },
+  { title: "Generative AI Mastermind", issuer: "Outskill", mark: "OS" },
+  { title: "UI/UX", issuer: "NSDC", mark: "NS" },
+  { title: "Learning How to Learn", issuer: "Deep Teaching Solutions", mark: "DT" },
+  { title: "Social Media Management", issuer: "Coursera Project Network", mark: "CP" },
+  { title: "Build a Full Website using WordPress", issuer: "Coursera", mark: "CO" },
+  { title: "Build a Free Website with WordPress", issuer: "Coursera", mark: "CO" },
+  { title: "Build a Full Website using Wix", issuer: "Coursera", mark: "CO" },
+  { title: "Build a Website with WordPress", issuer: "Coursera", mark: "CO" },
+  { title: "Build a Website with Squarespace", issuer: "Coursera", mark: "CO" },
+  { title: "Google Ads for Beginners", issuer: "Coursera", mark: "CO" },
 ];
 
-const languages = [
-  { name: 'English', flag: '🇬🇧', level: 'Professional Working' },
-  { name: 'Kannada', flag: '🇮🇳', level: 'Native / Bilingual' },
-  { name: 'Hindi', flag: '🇮🇳', level: 'Professional Working' },
-  { name: 'Tamil', flag: '🇮🇳', level: 'Limited Working' },
-  { name: 'Telugu', flag: '🇮🇳', level: 'Limited Working' },
-  { name: 'Urdu', flag: '🇮🇳', level: 'Limited Working' },
-];
+function SectionHeading({ eyebrow, title, copy }: { eyebrow: string; title: string; copy?: string }) {
+  return <div className="mb-10 md:mb-16"><p className="section-kicker">{eyebrow}</p><h2 className="section-title">{title}</h2>{copy && <p className="mt-5 max-w-2xl text-sm leading-7 text-muted-foreground md:text-base">{copy}</p>}</div>;
+}
 
-const Index = () => {
+function Reveal({ children, className = "", delay = 0 }: { children: React.ReactNode; className?: string; delay?: number }) {
+  const reduceMotion = useReducedMotion();
+  return <motion.div initial={reduceMotion ? false : { opacity: 0, y: 28 }} whileInView={reduceMotion ? {} : { opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.16 }} transition={{ duration: .65, delay, ease: [0.22, 1, 0.36, 1] }} className={className}>{children}</motion.div>;
+}
+
+export default function Index() {
+  const [tagline, setTagline] = useState(0);
+  const [dark, setDark] = useState(() => typeof document === "undefined" || document.documentElement.classList.contains("dark"));
+  const [menuOpen, setMenuOpen] = useState(false);
+
+  useEffect(() => {
+    const timer = window.setInterval(() => setTagline((current) => (current + 1) % taglines.length), 2600);
+    return () => window.clearInterval(timer);
+  }, []);
+
+  const scrollTo = (id: string) => {
+    document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "start" });
+    setMenuOpen(false);
+  };
+
+  const toggleTheme = () => {
+    const next = !dark;
+    setDark(next);
+    document.documentElement.classList.toggle("dark", next);
+    localStorage.setItem("sanjay-theme", next ? "dark" : "light");
+  };
+
+  const sendMessage = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const form = new FormData(event.currentTarget);
+    const name = String(form.get("name") || "");
+    const email = String(form.get("email") || "");
+    const message = String(form.get("message") || "");
+    const subject = encodeURIComponent(`Portfolio enquiry from ${name}`);
+    const body = encodeURIComponent(`${message}\n\nFrom: ${name}\nEmail: ${email}`);
+    window.location.href = `mailto:educate.sanjays@gmail.com?subject=${subject}&body=${body}`;
+  };
+
   return (
-    <div className="min-h-screen bg-background">
-      <div className="max-w-6xl mx-auto px-4 py-8 md:py-16">
-        <div className="grid grid-cols-1 lg:grid-cols-[320px_1fr] gap-8 lg:gap-12">
-
-          {/* ===== LEFT SIDEBAR ===== */}
-          <aside className="space-y-8">
-            {/* Profile Card */}
-            <FadeIn>
-              <div className="flex items-center gap-4">
-                <div className="w-24 h-24 rounded-full overflow-hidden border-2 border-primary/30 shrink-0">
-                  <img src={sanjayPhoto} alt="Sanjay S" className="w-full h-full object-cover" />
-                </div>
-                <div>
-                  <h1 className="font-display text-xl font-bold text-foreground flex items-center gap-2">
-                    Sanjay S
-                    <span className="w-4 h-4 rounded-full bg-primary flex items-center justify-center">
-                      <svg className="w-2.5 h-2.5 text-primary-foreground" fill="currentColor" viewBox="0 0 20 20">
-                        <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                      </svg>
-                    </span>
-                  </h1>
-                  <p className="text-xs text-muted-foreground">Founder · Professor · CA Inter</p>
-                </div>
-              </div>
-            </FadeIn>
-
-            {/* About */}
-            <FadeIn delay={0.05}>
-              <div>
-                <h3 className="font-mono text-xs text-muted-foreground uppercase tracking-widest mb-2">About</h3>
-                <p className="text-sm text-muted-foreground leading-relaxed">
-                  My mission is to make technology education more practical, engaging, and future-ready. I conduct AI and Tech seminars helping students and institutions understand real-world applications of AI, ML, and Automation.
-                </p>
-              </div>
-            </FadeIn>
-
-            {/* Contact */}
-            <FadeIn delay={0.1}>
-              <div>
-                <h3 className="font-mono text-xs text-muted-foreground uppercase tracking-widest mb-3">Contact</h3>
-                <div className="space-y-2.5">
-                  <a href="tel:+919740501114" className="flex items-center gap-2.5 text-sm text-muted-foreground hover:text-foreground transition-colors">
-                    <Phone className="w-3.5 h-3.5 text-primary/70" />
-                    +91 9740501114
-                  </a>
-                  <a href="mailto:educate.sanjays@gmail.com" className="flex items-center gap-2.5 text-sm text-muted-foreground hover:text-foreground transition-colors">
-                    <Mail className="w-3.5 h-3.5 text-primary/70" />
-                    educate.sanjays@gmail.com
-                  </a>
-                  <a href="mailto:sanjays@nexcubic.com" className="flex items-center gap-2.5 text-sm text-muted-foreground hover:text-foreground transition-colors">
-                    <Building2 className="w-3.5 h-3.5 text-primary/70" />
-                    sanjays@nexcubic.com
-                  </a>
-                  <a href="https://nexcubic.com" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2.5 text-sm text-muted-foreground hover:text-foreground transition-colors">
-                    <Globe className="w-3.5 h-3.5 text-primary/70" />
-                    nexcubic.com
-                  </a>
-                  <span className="flex items-center gap-2.5 text-sm text-muted-foreground">
-                    <MapPin className="w-3.5 h-3.5 text-primary/70" />
-                    Bengaluru, Karnataka, India
-                  </span>
-                </div>
-              </div>
-            </FadeIn>
-
-            {/* Languages */}
-            <FadeIn delay={0.15}>
-              <div>
-                <h3 className="font-mono text-xs text-muted-foreground uppercase tracking-widest mb-3">Languages</h3>
-                <div className="space-y-2">
-                  {languages.map((lang) => (
-                    <div key={lang.name} className="flex items-center justify-between text-sm">
-                      <span className="flex items-center gap-1.5 text-muted-foreground">
-                        <span>{lang.flag}</span> {lang.name}
-                      </span>
-                      <span className="text-xs text-muted-foreground/60">{lang.level}</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </FadeIn>
-
-            {/* Social Links */}
-            <FadeIn delay={0.2}>
-              <div>
-                <h3 className="font-mono text-xs text-muted-foreground uppercase tracking-widest mb-3">Connect</h3>
-                <div className="space-y-2.5">
-                  <a
-                    href="https://www.linkedin.com/in/sanjay-s-258781240/"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex items-center gap-2.5 text-sm text-muted-foreground hover:text-foreground transition-colors"
-                  >
-                    <Linkedin className="w-3.5 h-3.5 text-primary/70" />
-                    LinkedIn Profile
-                    <ExternalLink className="w-3 h-3 ml-auto opacity-40" />
-                  </a>
-                  <a
-                    href="https://www.instagram.com/sanjay.s.journey/"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex items-center gap-2.5 text-sm text-muted-foreground hover:text-foreground transition-colors"
-                  >
-                    <Instagram className="w-3.5 h-3.5 text-primary/70" />
-                    @sanjay.s.journey
-                    <ExternalLink className="w-3 h-3 ml-auto opacity-40" />
-                  </a>
-                </div>
-              </div>
-            </FadeIn>
-
-            {/* Certifications */}
-            <FadeIn delay={0.25}>
-              <div>
-                <h3 className="font-mono text-xs text-muted-foreground uppercase tracking-widest mb-3">Certifications</h3>
-                <div className="space-y-2">
-                  {certifications.map((cert) => (
-                    <div key={cert} className="flex items-start gap-2 text-sm text-muted-foreground">
-                      <Award className="w-3.5 h-3.5 text-primary/70 mt-0.5 shrink-0" />
-                      {cert}
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </FadeIn>
-
-            {/* Download Resume */}
-            <FadeIn delay={0.3}>
-              <motion.button
-                onClick={generateResumePdf}
-                whileHover={{ scale: 1.03 }}
-                whileTap={{ scale: 0.97 }}
-                className="w-full flex items-center justify-center gap-2 px-4 py-3 rounded-lg bg-primary text-primary-foreground font-medium text-sm hover:bg-primary/90 transition-colors"
-              >
-                <Download className="w-4 h-4" />
-                Download Resume
-              </motion.button>
-            </FadeIn>
-          </aside>
-
-          {/* ===== RIGHT MAIN CONTENT ===== */}
-          <main className="space-y-12">
-            {/* Intro */}
-            <FadeIn>
-              <section>
-                <h3 className="font-mono text-xs text-muted-foreground uppercase tracking-widest mb-3">Intro</h3>
-                <div className="space-y-3 text-sm text-muted-foreground leading-relaxed">
-                  <p>
-                    I'm <span className="text-foreground font-medium">Sanjay S</span>, the Founder of{' '}
-                    <a href="https://nexcubic.com" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">Nexcubic</a>,
-                    an Assistant Professor, and a CA Intermediate aspirant based in Bengaluru, India.
-                  </p>
-                  <p>
-                    As an educator, I believe in inspiring curiosity, creativity, and innovation — helping learners go beyond textbooks to explore the possibilities of the digital era.
-                    I conduct <span className="text-foreground font-medium">AI and Tech seminars</span> that help students and institutions understand real-world applications of Artificial Intelligence, Machine Learning, and Automation.
-                  </p>
-                  <p>
-                    After completing my <span className="text-foreground font-medium">MCA from Amity University in 2025</span>, I joined education —
-                    first as a CS Lecturer at Charan's PU College, then as an Assistant Professor at Siddaganga Institute and Charan's Degree College.
-                    Alongside, I founded <span className="text-foreground font-medium">Nexcubic</span> to build powerful digital solutions for businesses worldwide.
-                  </p>
-                </div>
-              </section>
-            </FadeIn>
-
-            {/* Skills & Technologies */}
-            <FadeIn delay={0.05}>
-              <section>
-                <h3 className="font-mono text-xs text-muted-foreground uppercase tracking-widest mb-6">Skills & Technologies</h3>
-                <div className="space-y-6">
-                  {skillCategories.map((cat, ci) => (
-                    <motion.div
-                      key={cat.title}
-                      initial={{ opacity: 0, y: 15 }}
-                      whileInView={{ opacity: 1, y: 0 }}
-                      viewport={{ once: true }}
-                      transition={{ delay: ci * 0.05, duration: 0.4 }}
-                    >
-                      <div className="flex items-center gap-2 mb-3">
-                        <cat.icon className="w-4 h-4 text-primary" />
-                        <h4 className="text-sm font-semibold text-foreground">{cat.title}</h4>
-                      </div>
-                      <div className="flex flex-wrap gap-2">
-                        {cat.skills.map((skill, si) => (
-                          <motion.span
-                            key={skill}
-                            initial={{ opacity: 0, scale: 0.9 }}
-                            whileInView={{ opacity: 1, scale: 1 }}
-                            viewport={{ once: true }}
-                            transition={{ delay: si * 0.02, duration: 0.25 }}
-                            whileHover={{ y: -2, scale: 1.05 }}
-                            className="px-3 py-1.5 text-xs font-medium rounded-full bg-secondary/50 border border-border text-secondary-foreground hover:border-primary/40 hover:bg-primary/5 transition-all cursor-default"
-                          >
-                            {skill}
-                          </motion.span>
-                        ))}
-                      </div>
-                    </motion.div>
-                  ))}
-                </div>
-              </section>
-            </FadeIn>
-
-            {/* Experience */}
-            <FadeIn delay={0.1}>
-              <section>
-                <h3 className="font-mono text-xs text-muted-foreground uppercase tracking-widest mb-6">Experience</h3>
-                <div className="space-y-8">
-                  {experience.map((exp, i) => (
-                    <motion.div
-                      key={i}
-                      initial={{ opacity: 0, y: 20 }}
-                      whileInView={{ opacity: 1, y: 0 }}
-                      viewport={{ once: true }}
-                      transition={{ delay: i * 0.06, duration: 0.4 }}
-                      className="group"
-                    >
-                      <div className="flex items-start gap-4">
-                        <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center shrink-0 mt-0.5 group-hover:bg-primary/20 transition-colors">
-                          <Briefcase className="w-4 h-4 text-primary" />
-                        </div>
-                        <div className="flex-1">
-                          <h4 className="font-display text-base font-semibold text-foreground">{exp.role}</h4>
-                          <p className="text-sm text-primary/80 font-medium">{exp.org}</p>
-                          <div className="flex flex-wrap items-center gap-3 mt-1 mb-2">
-                            <span className="text-xs text-muted-foreground flex items-center gap-1">
-                              <Calendar className="w-3 h-3" /> {exp.period}
-                            </span>
-                            <span className="text-xs text-muted-foreground flex items-center gap-1">
-                              <MapPin className="w-3 h-3" /> {exp.location}
-                            </span>
-                          </div>
-                          <ul className="space-y-1.5">
-                            {exp.highlights.map((h, j) => (
-                              <li key={j} className="text-sm text-muted-foreground leading-relaxed pl-3 relative before:content-[''] before:absolute before:left-0 before:top-[9px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-primary/40">
-                                {h}
-                              </li>
-                            ))}
-                          </ul>
-                          {'link' in exp && exp.link && (
-                            <a
-                              href={exp.link}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="inline-flex items-center gap-1.5 mt-2 text-xs text-primary hover:underline"
-                            >
-                              <ExternalLink className="w-3 h-3" />
-                              Visit {exp.org}
-                            </a>
-                          )}
-                        </div>
-                      </div>
-                    </motion.div>
-                  ))}
-                </div>
-              </section>
-            </FadeIn>
-
-            {/* Education */}
-            <FadeIn delay={0.15}>
-              <section>
-                <h3 className="font-mono text-xs text-muted-foreground uppercase tracking-widest mb-6">Education</h3>
-                <div className="space-y-8">
-                  {education.map((edu, i) => (
-                    <motion.div
-                      key={i}
-                      initial={{ opacity: 0, y: 20 }}
-                      whileInView={{ opacity: 1, y: 0 }}
-                      viewport={{ once: true }}
-                      transition={{ delay: i * 0.08, duration: 0.4 }}
-                      className="group"
-                    >
-                      <div className="flex items-start gap-4">
-                        <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center shrink-0 mt-0.5 group-hover:bg-primary/20 transition-colors">
-                          <GraduationCap className="w-4 h-4 text-primary" />
-                        </div>
-                        <div>
-                          <h4 className="font-display text-base font-semibold text-foreground">{edu.degree}</h4>
-                          <p className="text-sm text-primary/80 font-medium">{edu.school}</p>
-                          <div className="flex flex-wrap items-center gap-3 mt-1 mb-2">
-                            <span className="text-xs text-muted-foreground flex items-center gap-1">
-                              <Calendar className="w-3 h-3" /> {edu.period}
-                            </span>
-                          </div>
-                          <p className="text-sm text-muted-foreground leading-relaxed">{edu.desc}</p>
-                        </div>
-                      </div>
-                    </motion.div>
-                  ))}
-                </div>
-              </section>
-            </FadeIn>
-
-            {/* What I Do */}
-            <FadeIn delay={0.2}>
-              <section>
-                <h3 className="font-mono text-xs text-muted-foreground uppercase tracking-widest mb-6">What I Do</h3>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  {[
-                    { icon: Building2, title: 'Nexcubic – Digital Solutions', desc: 'Leading website/app development, AI agents, branding, UI/UX, and digital marketing for businesses.' },
-                    { icon: GraduationCap, title: 'Teaching & Education', desc: 'Teaching CS to PU & BCA students with hands-on, practical approach at multiple institutions.' },
-                    { icon: Code, title: 'Full Stack Development', desc: 'Building modern web apps using MERN stack, Python full stack, and cutting-edge technologies.' },
-                    { icon: Brain, title: 'AI & Tech Seminars', desc: 'Conducting seminars on AI, ML, Generative AI, and Automation for students and institutions.' },
-                    { icon: Users, title: 'Student Mentorship', desc: 'Career guidance, mock interviews, interview preparation, and academic excellence mentoring.' },
-                    { icon: Rocket, title: 'Startup & Innovation', desc: 'Helping startups and enterprises establish strong online presence and accelerate growth.' },
-                  ].map((item, i) => (
-                    <motion.div
-                      key={i}
-                      whileHover={{ y: -3 }}
-                      className="p-5 rounded-xl border border-border bg-card/50 hover:border-primary/30 transition-colors"
-                    >
-                      <item.icon className="w-5 h-5 text-primary mb-3" />
-                      <h4 className="text-sm font-semibold text-foreground mb-1">{item.title}</h4>
-                      <p className="text-xs text-muted-foreground leading-relaxed">{item.desc}</p>
-                    </motion.div>
-                  ))}
-                </div>
-              </section>
-            </FadeIn>
-
-            {/* Areas of Focus */}
-            <FadeIn delay={0.25}>
-              <section>
-                <h3 className="font-mono text-xs text-muted-foreground uppercase tracking-widest mb-4">Areas of Focus</h3>
-                <div className="flex flex-wrap gap-2">
-                  {[
-                    'Artificial Intelligence & Machine Learning',
-                    'Generative AI and Automation',
-                    'Practical Technology Education',
-                    'Student Mentorship & Academic Excellence',
-                    'Social Media Marketing',
-                    'Search Engine Optimization (SEO)',
-                    'AI for Leadership',
-                  ].map((area) => (
-                    <span key={area} className="px-3 py-1.5 rounded-full bg-primary/10 text-xs text-primary font-medium border border-primary/20">
-                      {area}
-                    </span>
-                  ))}
-                </div>
-              </section>
-            </FadeIn>
-
-            {/* CTA */}
-            <FadeIn delay={0.3}>
-              <section className="p-8 rounded-xl border border-border bg-card/30 text-center">
-                <h3 className="font-display text-xl font-bold text-foreground mb-2">Let's work together</h3>
-                <p className="text-sm text-muted-foreground mb-6">
-                  Open to collaborations, seminars, educational partnerships, and freelance projects.
-                </p>
-                <div className="flex flex-wrap gap-3 justify-center">
-                  <a
-                    href="mailto:educate.sanjays@gmail.com"
-                    className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-primary text-primary-foreground text-sm font-medium hover:opacity-90 transition-opacity"
-                  >
-                    <Mail className="w-4 h-4" />
-                    Get in Touch
-                  </a>
-                  <a
-                    href="https://www.linkedin.com/in/sanjay-s-258781240/"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full border border-border text-foreground text-sm font-medium hover:bg-secondary transition-colors"
-                  >
-                    <Linkedin className="w-4 h-4" />
-                    LinkedIn
-                  </a>
-                  <a
-                    href="https://nexcubic.com"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full border border-border text-foreground text-sm font-medium hover:bg-secondary transition-colors"
-                  >
-                    <Globe className="w-4 h-4" />
-                    Nexcubic
-                  </a>
-                </div>
-              </section>
-            </FadeIn>
-          </main>
-        </div>
-
-        {/* Footer */}
-        <footer className="mt-16 pt-8 border-t border-border flex flex-col sm:flex-row items-center justify-between gap-4">
-          <p className="font-display text-sm font-bold">
-            <span className="text-gradient">Sanjay S</span>
-            <span className="text-muted-foreground font-normal ml-2 text-xs">Founder · Professor · Mentor</span>
-          </p>
-          <div className="flex items-center gap-4">
-            <a href="https://www.linkedin.com/in/sanjay-s-258781240/" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-foreground transition-colors">
-              <Linkedin className="w-4 h-4" />
-            </a>
-            <a href="https://www.instagram.com/sanjay.s.journey/" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-foreground transition-colors">
-              <Instagram className="w-4 h-4" />
-            </a>
-            <a href="mailto:educate.sanjays@gmail.com" className="text-muted-foreground hover:text-foreground transition-colors">
-              <Mail className="w-4 h-4" />
-            </a>
+    <div className="min-h-screen overflow-x-hidden bg-background text-foreground">
+      <header className="fixed inset-x-0 top-0 z-50 border-b border-border/60 bg-background/80 backdrop-blur-xl">
+        <nav aria-label="Primary navigation" className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
+          <button onClick={() => scrollTo("top")} className="focus-ring flex items-center gap-3 rounded-sm" aria-label="Back to top">
+            <span className="flex h-8 w-8 items-center justify-center rounded-sm bg-primary font-display text-sm font-bold text-primary-foreground">S</span>
+            <span className="font-display text-sm font-semibold">SANJAY S</span>
+          </button>
+          <div className="hidden items-center gap-5 lg:flex">
+            {links.map((link) => <button key={link} onClick={() => scrollTo(link)} className="focus-ring rounded-sm text-[11px] capitalize text-muted-foreground transition-colors hover:text-primary">{link}</button>)}
           </div>
-          <p className="font-mono text-xs text-muted-foreground">
-            © {new Date().getFullYear()} · Built with purpose.
-          </p>
-        </footer>
-      </div>
+          <div className="flex items-center gap-2">
+            <Button variant="ghost" size="icon" onClick={toggleTheme} aria-label={dark ? "Switch to light mode" : "Switch to dark mode"} title={dark ? "Light mode" : "Dark mode"}>{dark ? <Sun /> : <Moon />}</Button>
+            <Button variant="ghost" size="icon" className="lg:hidden" onClick={() => setMenuOpen((value) => !value)} aria-label="Toggle navigation" aria-expanded={menuOpen}>{menuOpen ? <X /> : <Menu />}</Button>
+          </div>
+        </nav>
+        {menuOpen && <div className="border-t border-border bg-background px-4 py-4 lg:hidden">{links.map((link) => <button key={link} onClick={() => scrollTo(link)} className="focus-ring block w-full rounded-sm px-3 py-3 text-left text-sm capitalize text-muted-foreground hover:bg-secondary hover:text-foreground">{link}</button>)}</div>}
+      </header>
+
+      <main>
+        <section id="top" className="relative flex min-h-screen scroll-mt-16 items-center overflow-hidden pt-20">
+          <div aria-hidden="true" className="portfolio-grid absolute inset-0" />
+          <motion.div aria-hidden="true" className="absolute right-[10%] top-[20%] h-64 w-64 rounded-full bg-primary/10 blur-3xl" animate={{ opacity: [.35, .65, .35], scale: [1, 1.12, 1] }} transition={{ duration: 7, repeat: Infinity }} />
+          <div className="relative mx-auto grid w-full max-w-7xl items-end gap-12 px-4 pb-16 pt-12 sm:px-6 lg:grid-cols-[1.2fr_.8fr] lg:px-8">
+            <div>
+              <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: .6 }} className="mb-8 flex items-center gap-3 text-xs text-muted-foreground"><span className="h-2 w-2 rounded-full bg-primary shadow-[0_0_18px_hsl(var(--glow))]" />Bengaluru, India · Open to meaningful collaborations</motion.div>
+              <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: .1 }} className="mb-3 font-display text-lg font-medium text-primary">Hello, I’m</motion.p>
+              <motion.h1 initial={{ opacity: 0, y: 25 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: .15, duration: .7 }} className="font-display text-[clamp(4rem,13vw,9.5rem)] font-semibold leading-[.82]">Sanjay<br /><span className="text-primary">S.</span></motion.h1>
+              <div className="mt-8 h-9 overflow-hidden text-base text-muted-foreground sm:text-xl">
+                <motion.p key={tagline} initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -16 }} transition={{ duration: .4 }}>{taglines[tagline]}<span className="ml-1 text-primary">_</span></motion.p>
+              </div>
+              <div className="mt-9 flex flex-wrap gap-3">
+                <Button size="lg" onClick={() => scrollTo("ventures")} className="group">View Work <ArrowDownRight className="transition-transform group-hover:translate-x-0.5 group-hover:translate-y-0.5" /></Button>
+                <Button size="lg" variant="outline" onClick={() => scrollTo("contact")}>Get in Touch</Button>
+              </div>
+            </div>
+            <motion.div initial={{ opacity: 0, x: 35 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: .3, duration: .8 }} className="relative mx-auto w-full max-w-md lg:ml-auto">
+              <div className="absolute -left-4 top-10 hidden h-full w-full border border-primary/35 md:block" />
+              <figure className="relative aspect-[4/5] overflow-hidden border border-border bg-card">
+                <img src={sanjayPhoto} alt="Sanjay S, founder and educator" className="h-full w-full object-cover object-top grayscale-[12%] transition duration-700 hover:scale-[1.025] hover:grayscale-0" fetchPriority="high" />
+                <figcaption className="absolute inset-x-0 bottom-0 flex items-end justify-between bg-gradient-to-t from-background via-background/70 to-transparent px-5 pb-5 pt-24"><span className="font-display text-lg font-semibold">Founder × Educator</span><span className="text-xs text-primary">01 / PORTFOLIO</span></figcaption>
+              </figure>
+            </motion.div>
+          </div>
+        </section>
+
+        <section id="about" className="scroll-mt-16 border-t border-border py-24 md:py-32">
+          <div className="mx-auto grid max-w-7xl gap-12 px-4 sm:px-6 lg:grid-cols-[.55fr_1fr] lg:px-8">
+            <Reveal><SectionHeading eyebrow="01 — About" title="Building systems that help people move forward." /></Reveal>
+            <Reveal delay={.1} className="lg:pt-12">
+              <p className="font-display text-2xl leading-relaxed text-foreground md:text-3xl">Founder of <span className="text-primary">Nexcubic</span>, an AI-driven digital solutions agency, and an Assistant Professor and Program Coordinator for AI & ML Programs at Charan’s Degree College.</p>
+              <div className="mt-10 grid gap-6 text-sm leading-7 text-muted-foreground sm:grid-cols-2">
+                <p>I hold an MCA in AI/ML from Amity University and a BCA from Pinnacle Institute of Management and Science, affiliated with Bangalore University.</p>
+                <p>Beyond the classroom and the studio, I actively participate in Bengaluru’s startup and developer ecosystem—connecting education, technology, and community.</p>
+              </div>
+            </Reveal>
+          </div>
+        </section>
+
+        <section id="experience" className="scroll-mt-16 bg-card/45 py-24 md:py-32">
+          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <Reveal><SectionHeading eyebrow="02 — Experience" title="A career across education, technology, and people." /></Reveal>
+            <div className="relative ml-3 border-l border-border md:ml-1 md:grid md:grid-cols-2 md:gap-x-16 md:border-l-0">
+              {experience.map((item, index) => <Reveal key={item.role} delay={index * .04} className={`relative pb-12 pl-8 md:pl-0 ${index % 2 ? "md:mt-24" : ""}`}>
+                <span className="absolute -left-[5px] top-2 h-2.5 w-2.5 rounded-full bg-primary ring-4 ring-background md:hidden" />
+                <article className="group border-t border-border pt-6 transition-colors hover:border-primary">
+                  <div className="mb-6 flex items-start justify-between gap-4"><span className="flex h-11 w-11 items-center justify-center rounded-sm bg-primary/10 text-primary"><item.icon className="h-5 w-5" /></span><span className="text-xs text-muted-foreground">{item.period}</span></div>
+                  <h3 className="text-xl font-semibold">{item.role}</h3><p className="mt-2 text-sm text-primary">{item.org}</p><p className="mt-4 text-sm leading-7 text-muted-foreground">{item.detail}</p>
+                </article>
+              </Reveal>)}
+            </div>
+          </div>
+        </section>
+
+        <section id="ventures" className="scroll-mt-16 py-24 md:py-32">
+          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <Reveal><SectionHeading eyebrow="03 — Ventures & Leadership" title="Ideas given structure, identity, and momentum." copy="Four ventures across digital innovation, social impact, agriculture, and design." /></Reveal>
+            <div className="grid gap-px overflow-hidden border border-border bg-border sm:grid-cols-2">
+              {ventures.map((venture, index) => <Reveal key={venture.name} delay={index * .06}>
+                <article tabIndex={0} className="group min-h-72 bg-background p-7 outline-none transition-colors hover:bg-card focus:bg-card md:p-9">
+                  <div className="flex items-start justify-between"><span className="flex h-12 w-12 items-center justify-center border border-primary/40 font-display text-sm font-semibold text-primary">{venture.mark}</span>{venture.href ? <a href={venture.href} target="_blank" rel="noreferrer" aria-label={`Visit ${venture.name}`} className="focus-ring rounded-sm p-2 text-muted-foreground transition hover:text-primary"><ExternalLink className="h-5 w-5" /></a> : <ArrowDownRight className="h-5 w-5 text-muted-foreground transition-transform group-hover:translate-x-1 group-hover:translate-y-1" />}</div>
+                  <p className="mt-9 text-xs text-primary">{venture.role}</p><h3 className="mt-2 text-3xl font-semibold">{venture.name}</h3><p className="mt-3 text-sm text-muted-foreground">{venture.description}</p>
+                  <p className="mt-5 translate-y-2 text-sm leading-6 text-muted-foreground opacity-0 transition duration-300 group-hover:translate-y-0 group-hover:opacity-100 group-focus:translate-y-0 group-focus:opacity-100">{venture.reveal}</p>
+                </article>
+              </Reveal>)}
+            </div>
+          </div>
+        </section>
+
+        <section id="skills" className="scroll-mt-16 border-y border-border bg-card/45 py-24 md:py-32">
+          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <Reveal><SectionHeading eyebrow="04 — Capabilities" title="Technical depth with a builder’s perspective." /></Reveal>
+            <div className="grid gap-10 md:grid-cols-2">
+              {skills.map((group, index) => <Reveal key={group.title} delay={index * .06} className="border-t border-border pt-6">
+                <div className="mb-5 flex items-center gap-3"><group.icon className="h-5 w-5 text-primary" /><h3 className="text-lg font-semibold">{group.title}</h3></div>
+                <div className="flex flex-wrap gap-2">{group.items.map((item) => <motion.span key={item} whileHover={{ y: -3 }} className="cursor-default rounded-sm border border-border bg-background px-3 py-2 text-xs text-muted-foreground transition-colors hover:border-primary/50 hover:text-foreground">{item}</motion.span>)}</div>
+              </Reveal>)}
+            </div>
+          </div>
+        </section>
+
+        <section id="certifications" className="scroll-mt-16 py-24 md:py-32">
+          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <Reveal><SectionHeading eyebrow="05 — Certifications" title="Continuous learning, deliberately practiced." /></Reveal>
+            <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+              {certifications.map((cert, index) => <Reveal key={cert.title} delay={(index % 3) * .04}>
+                <article className="group flex min-h-32 items-start gap-4 border border-border bg-card/40 p-5 transition hover:-translate-y-1 hover:border-primary/45 hover:bg-card">
+                  <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-primary/40 text-[10px] font-semibold text-primary">{cert.mark}</span><div><h3 className="text-sm font-semibold leading-6">{cert.title}</h3><p className="mt-2 text-xs text-muted-foreground">{cert.issuer}</p></div>
+                </article>
+              </Reveal>)}
+            </div>
+          </div>
+        </section>
+
+        <section id="community" className="scroll-mt-16 overflow-hidden border-y border-border bg-primary py-24 text-primary-foreground md:py-32">
+          <div className="mx-auto grid max-w-7xl gap-14 px-4 sm:px-6 lg:grid-cols-[.85fr_1.15fr] lg:px-8">
+            <Reveal><p className="mb-4 text-xs uppercase">06 — Community & Talks</p><h2 className="max-w-xl text-4xl font-semibold leading-tight md:text-6xl">Knowledge grows when it moves through a community.</h2></Reveal>
+            <div className="space-y-px bg-primary-foreground/20">
+              {[{ icon: Presentation, title: "Guest speaker", copy: "Invited speaker at Ghousia Engineering College, sharing practical perspectives on technology and careers." }, { icon: Users, title: "Founder ecosystem", copy: "Active participant at eChai Startup Founder Meets across Bengaluru's growing startup community." }, { icon: MessageCircle, title: "AI & career sessions", copy: "Delivered AI seminars and career guidance sessions across colleges for students and emerging professionals." }].map((item, index) => <Reveal key={item.title} delay={index * .08}><article className="flex gap-5 bg-primary px-1 py-7"><item.icon className="mt-1 h-6 w-6 shrink-0" /><div><h3 className="text-xl font-semibold">{item.title}</h3><p className="mt-2 text-sm leading-7 opacity-75">{item.copy}</p></div></article></Reveal>)}
+            </div>
+          </div>
+        </section>
+
+        <section id="connect" className="scroll-mt-16 py-24 md:py-32">
+          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <Reveal><SectionHeading eyebrow="07 — Social Proof" title="Follow the work, ideas, and journey." copy="Recent platform content is available directly on LinkedIn and Instagram. Live feeds require platform authorization, so these links always lead to the current source." /></Reveal>
+            <div className="grid gap-5 lg:grid-cols-2">
+              <Reveal><a href="https://linkedin.com/in/sanjay-s" target="_blank" rel="noreferrer" className="focus-ring group flex min-h-64 flex-col justify-between border border-border bg-card p-7 transition hover:border-primary/60 md:p-9"><div className="flex items-start justify-between"><Linkedin className="h-9 w-9 text-primary" /><ExternalLink className="h-5 w-5 text-muted-foreground transition group-hover:-translate-y-1 group-hover:translate-x-1" /></div><div><p className="text-xs text-muted-foreground">Professional network</p><h3 className="mt-2 text-3xl font-semibold">Connect on LinkedIn</h3><p className="mt-3 text-sm text-muted-foreground">Follow education, technology, leadership, and ecosystem updates.</p></div></a></Reveal>
+              <Reveal delay={.08}><a href="https://www.instagram.com/sanjay.s.journey/" target="_blank" rel="noreferrer" className="focus-ring group flex min-h-64 flex-col justify-between border border-border bg-card p-7 transition hover:border-primary/60 md:p-9"><div className="flex items-start justify-between"><Instagram className="h-9 w-9 text-primary" /><ExternalLink className="h-5 w-5 text-muted-foreground transition group-hover:-translate-y-1 group-hover:translate-x-1" /></div><div><p className="text-xs text-muted-foreground">Behind the scenes</p><h3 className="mt-2 text-3xl font-semibold">@sanjay.s.journey</h3><p className="mt-3 text-sm text-muted-foreground">See recent moments from teaching, building, events, and personal growth.</p></div></a></Reveal>
+            </div>
+          </div>
+        </section>
+
+        <section id="contact" className="scroll-mt-16 border-t border-border bg-card/45 py-24 md:py-32">
+          <div className="mx-auto grid max-w-7xl gap-14 px-4 sm:px-6 lg:grid-cols-[.8fr_1.2fr] lg:px-8">
+            <Reveal><SectionHeading eyebrow="08 — Contact" title="Let’s build something that matters." copy="For speaking, collaborations, education programs, or digital projects, send a message or reach out directly." />
+              <div className="space-y-4"><a href="tel:+919740501114" className="focus-ring flex items-center gap-3 rounded-sm text-sm text-muted-foreground transition hover:text-primary"><Phone className="h-4 w-4" />+91 9740501114</a><a href="mailto:educate.sanjays@gmail.com" className="focus-ring flex items-center gap-3 rounded-sm text-sm text-muted-foreground transition hover:text-primary"><Mail className="h-4 w-4" />educate.sanjays@gmail.com</a><span className="flex items-center gap-3 text-sm text-muted-foreground"><MapPin className="h-4 w-4" />Bengaluru, Karnataka, India</span></div>
+            </Reveal>
+            <Reveal delay={.1}><form onSubmit={sendMessage} className="glass-panel p-6 md:p-9"><div className="grid gap-6 sm:grid-cols-2"><label className="text-xs text-muted-foreground">Your name<input required name="name" autoComplete="name" className="focus-ring mt-2 h-12 w-full rounded-sm border border-input bg-background px-4 text-sm text-foreground" placeholder="Name" /></label><label className="text-xs text-muted-foreground">Email address<input required name="email" type="email" autoComplete="email" className="focus-ring mt-2 h-12 w-full rounded-sm border border-input bg-background px-4 text-sm text-foreground" placeholder="you@example.com" /></label></div><label className="mt-6 block text-xs text-muted-foreground">Your message<textarea required name="message" rows={6} className="focus-ring mt-2 w-full resize-y rounded-sm border border-input bg-background p-4 text-sm text-foreground" placeholder="Tell me about the idea, event, or opportunity..." /></label><Button type="submit" size="lg" className="mt-6 w-full sm:w-auto">Compose email <Send /></Button></form></Reveal>
+          </div>
+        </section>
+      </main>
+
+      <footer className="border-t border-border py-8">
+        <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-6 px-4 text-center sm:px-6 md:flex-row md:text-left lg:px-8">
+          <div><p className="font-display font-semibold">Sanjay S</p><p className="mt-1 text-xs text-muted-foreground">© {new Date().getFullYear()} · Built with purpose.</p></div>
+          <div className="flex items-center gap-2"><Button asChild variant="ghost" size="icon"><a href="https://linkedin.com/in/sanjay-s" target="_blank" rel="noreferrer" aria-label="LinkedIn"><Linkedin /></a></Button><Button asChild variant="ghost" size="icon"><a href="https://www.instagram.com/sanjay.s.journey/" target="_blank" rel="noreferrer" aria-label="Instagram"><Instagram /></a></Button><Button asChild variant="ghost" size="icon"><a href="mailto:educate.sanjays@gmail.com" aria-label="Email"><Mail /></a></Button></div>
+          <Button variant="outline" onClick={() => scrollTo("top")}>Back to top <ArrowUp /></Button>
+        </div>
+      </footer>
     </div>
   );
-};
-
-export default Index;
+}

@@ -1,33 +1,36 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" class="dark">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>GOD PLAN OS — Founder Operating System</title>
-    <meta name="description" content="GOD PLAN OS — your personal Founder Operating System. Multi-user CRM, calendar, network, journal, and second brain." />
+    <title>Sanjay S — Founder, Educator & Community Builder</title>
+    <meta name="description" content="Portfolio of Sanjay S, founder of Nexcubic, AI and ML educator, and community builder in Bengaluru." />
     <meta name="author" content="Sanjay S" />
-
-    <meta property="og:title" content="GOD PLAN OS — Founder Operating System" />
-    <meta property="og:description" content="Your personal Founder Operating System. CRM, calendar, network, journal in one." />
+    <meta name="theme-color" content="#11131a" />
+    <link rel="canonical" href="/" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <meta property="og:title" content="Sanjay S — Founder, Educator & Community Builder" />
+    <meta property="og:description" content="Founder of Nexcubic, AI and ML educator, and active builder in Bengaluru's startup ecosystem." />
     <meta property="og:type" content="website" />
-    <meta property="og:image" content="https://lovable.dev/opengraph-image-p98pqg.png" />
-
+    <meta property="og:url" content="/" />
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:site" content="@SanjayS" />
-    <meta name="twitter:image" content="https://lovable.dev/opengraph-image-p98pqg.png" />
-    
-    <!-- SPA redirect handler for GitHub Pages -->
+    <meta name="twitter:title" content="Sanjay S — Founder, Educator & Community Builder" />
+    <meta name="twitter:description" content="Founder of Nexcubic, AI and ML educator, and active builder in Bengaluru's startup ecosystem." />
+    <script type="application/ld+json">
+      {"@context":"https://schema.org","@type":"Person","name":"Sanjay S","jobTitle":"Founder and Assistant Professor","email":"mailto:educate.sanjays@gmail.com","telephone":"+91 9740501114","sameAs":["https://linkedin.com/in/sanjay-s","https://www.instagram.com/sanjay.s.journey/"]}
+    </script>
     <script>
       (function() {
         var redirect = sessionStorage.redirect;
         delete sessionStorage.redirect;
-        if (redirect && redirect !== location.href) {
-          history.replaceState(null, null, redirect);
-        }
+        if (redirect && redirect !== location.href) history.replaceState(null, null, redirect);
+        var savedTheme = localStorage.getItem('sanjay-theme');
+        if (savedTheme === 'light') document.documentElement.classList.remove('dark');
       })();
     </script>
   </head>
-
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
